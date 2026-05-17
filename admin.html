@@ -51,7 +51,7 @@
     </div>
 
     <script>
-        // Secure Target Endpoint Root Node Mapping Mapping
+        // Secure Target Endpoint Root Node Mapping
         const scriptUrl = "https://script.google.com/macros/s/AKfycbyMOWfLzr742-CeLnIWEI_-f2-vETiRWn8NKBDzRy3JnaRe4ZwDbOB24JFXilSLBL67/exec";
 
         function loadOrders() {
@@ -62,25 +62,33 @@
                 if (!response.ok) throw new Error('Data transmission integrity validation failed from core API');
                 return response.json();
             })
-            .then(data => {
+            .then(responseObj => {
                 tableBody.innerHTML = "";
+                
+                // Extracting data array from the Apps Script response object
+                const data = responseObj.data || [];
                 
                 if (!data || data.length === 0) {
                     tableBody.innerHTML = <tr><td colspan="7" style="text-align:center; padding:30px; color:#aaa;">No consumer purchase metadata records found inside backend database storage.</td></tr>;
                     return;
                 }
 
-                // Map database nodes and execute lifo loop structure (Newest first)
+                // Map database nodes and execute LIFO loop structure (Newest first)
                 for (let i = data.length - 1; i >= 0; i--) {
                     const row = data[i];
                     
-                    const orderId = row.Order_ID || "N/A";
-                    const name = row.Customer_Name || "N/A";
-                    const phone = row.Phone || "N/A";
-                    const product = row.Product || "N/A";
-                    const price = row.Price ? ${parseFloat(row.Price).toFixed(2)} : "N/A";
-                    const address = row.Address || "N/A";
-                    const status = row.Status || "Pending";
+                    // Direct dynamic mapping fallback for Google Sheets headers
+                    const orderId = row["Order ID"] || row.Order_ID || "N/A";
+                    const name = row["Customer Name"] || row.Customer_Name || "N/A";
+                    const phone = row["Contact Phone"] || row.Phone || "N/A";
+                    const product = row["Product Title"] || row.Product || "N/A";
+                    
+                    // Formatting and extracting price data safely
+                    const rawPrice = row["Price Captured"] || row.Price;
+                    const price = rawPrice ? ${parseFloat(rawPrice).toFixed(2)} : "N/A";
+                    
+                    const address = row["Shipping Destination"] || row.Address || "N/A";
+                    const status = row["Logistics Status"] || row.Status || "Pending";
 
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
