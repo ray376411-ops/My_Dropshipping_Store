@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +14,6 @@
         .order-table th { background-color: #2575fc; color: white; }
         .status-badge { padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
         .status-pending { background-color: #ffeaa7; color: #d63031; }
-        .status-shipped { background-color: #badc58; color: #6ab04c; }
         .refresh-btn { padding: 10px 20px; background-color: #2575fc; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
@@ -26,7 +26,7 @@
 
     <div class="dashboard-container">
         <div class="dashboard-header">
-            <h2>Live Customer Orders (From Google Sheet)</h2>
+            <h2>Live Customer Orders (Direct From Sheet)</h2>
             <button onclick="loadOrders()" class="refresh-btn">🔄 Refresh Orders</button>
         </div>
         
@@ -43,55 +43,70 @@
                 </tr>
             </thead>
             <tbody id="ordersTableBody">
-                <tr><td colspan="7" style="text-align:center; padding:20px; color:#aaa;">Loading orders from Google Sheet...</td></tr>
+                <tr><td colspan="7" style="text-align:center; padding:20px; color:#aaa;">Loading orders directly from Google Sheet...</td></tr>
             </tbody>
         </table>
     </div>
 
     <script>
-        const scriptUrl = "https://script.google.com/macros/s/AKfycby8tSZCuEDG-PBbcvgpTl9IIqIlOdqsHlzmYC7CSVL-astMMWO1zs3Rr7EeAWADgCQ/exec";
+        // Automatically configured with your Google Sheet ID
+        const sheetId = "1egaxp52uQ6j1WxXQcfYMM327Htyj33I_aMsMo91Tx-U";
+        const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv`;
 
         function loadOrders() {
             const tableBody = document.getElementById('ordersTableBody');
             
-            const oldScript = document.getElementById('jsonpScript');
-            if (oldScript) oldScript.remove();
-
-            window.handleOrdersResponse = function(orders) {
+            fetch(csvUrl)
+            .then(response => response.text())
+            .then(csvText => {
+                const lines = csvText.split('\n');
                 tableBody.innerHTML = "";
+                
+                let hasOrders = false;
 
-                if (!orders || orders.length === 0) {
-                    tableBody.innerHTML = <tr><td colspan="7" style="text-align:center; padding:20px; color:#aaa;">No orders found in Google Sheet.</td></tr>;
-                    return;
-                }
+                // Loop backwards to show the newest orders on top
+                for (let i = lines.length - 1; i >= 1; i--) {
+                    if (!lines[i].trim()) continue;
+                    
+                    // Split by CSV standards and clean quotes
+                    const row = lines[i].split('","').map(item => item.replace(/^"|"$/g, '').trim());
+                    
+                    if (row.length < 5) continue;
+                    hasOrders = true;
 
-                orders.reverse().forEach(order => {
+                    const orderId = row[0] || "N/A";
+                    const name = row[1] || "N/A";
+                    const phone = row[2] || "N/A";
+                    const product = row[3] || "N/A";
+                    const price = row[4] || "N/A";
+                    const address = row[5] || "N/A";
+                    const status = row[6] || "Pending";
+
                     const tr = document.createElement('tr');
-                    const statusClass = order.status === 'Pending' ? 'status-pending' : 'status-shipped';
-
                     tr.innerHTML = `
-                        <td>#${order.id}</td>
-                        <td><strong>${order.name}</strong></td>
-                        <td>${order.phone}</td>
-                        <td>${order.product}</td>
-                        <td>$${order.price}</td>
-                        <td>${order.address}</td>
-                        <td><span class="status-badge ${statusClass}">${order.status}</span></td>
+                        <td>#${orderId}</td>
+                        <td><strong>${name}</strong></td>
+                        <td>${phone}</td>
+                        <td>${product}</td>
+                        <td>$${price}</td>
+                        <td>${address}</td>
+                        <td><span class="status-badge status-pending">${status}</span></td>
                     `;
                     tableBody.appendChild(tr);
-                });
-            };
+                }
 
-            const script = document.createElement('script');
-            script.id = 'jsonpScript';
-            script.src = scriptUrl + "?callback=handleOrdersResponse";
-            script.onerror = function() {
-                tableBody.innerHTML = <tr><td colspan="7" style="text-align:center; padding:20px; color:red;">Error loading data from Google Sheet.</td></tr>;
-            };
-            document.body.appendChild(script);
+                if (!hasOrders) {
+                    tableBody.innerHTML = <tr><td colspan="7" style="text-align:center; padding:20px; color:#aaa;">No orders found in Google Sheet.</td></tr>;
+                }
+            })
+            .catch(error => {
+                tableBody.innerHTML = <tr><td colspan="7" style="text-align:center; padding:20px; color:red;">Error connecting directly to Google Sheet. Please check Sheet Sharing settings.</td></tr>;
+                console.error(error);
+            });
         }
 
         window.onload = loadOrders;
+        // Auto refresh every 10 seconds
         setInterval(loadOrders, 10000); 
     </script>
 </body>
