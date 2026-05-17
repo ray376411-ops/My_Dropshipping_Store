@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Dropshipping Store</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">TrendStore</div>
+        <div class="cart-icon">🛒 Cart (<span id="cart-count">0</span>)</div>
+    </header>
+
+    <section class="hero">
+        <h1>Premium Products, Unbeatable Prices</h1>
+        <p>Order today and get Free Shipping worldwide!</p>
+    </section>
+
+    <main class="products-container">
+        
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500" alt="Smartwatch">
+            <h3>Premium Bluetooth Smartwatch</h3>
+            <p class="price">$49.99 <span class="old-price">$99.99</span></p>
+            <button class="btn-add-to-cart" onclick="addToCart('Premium Bluetooth Smartwatch', 49.99)">Add to Cart</button>
+            <button class="btn-buy-now" onclick="openOrderModal('Premium Bluetooth Smartwatch', 49.99)">Order Now (COD)</button>
+        </div>
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500" alt="Headphones">
+            <h3>Wireless Noise-Canceling Headphones</h3>
+            <p class="price">$79.99 <span class="old-price">$149.99</span></p>
+            <button class="btn-add-to-cart" onclick="addToCart('Wireless Headphones', 79.99)">Add to Cart</button>
+            <button class="btn-buy-now" onclick="openOrderModal('Wireless Headphones', 79.99)">Order Now (COD)</button>
+        </div>
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500" alt="Shoes">
+            <h3>Ultra Lightweight Sports Shoes</h3>
+            <p class="price">$59.99 <span class="old-price">$119.99</span></p>
+            <button class="btn-add-to-cart" onclick="addToCart('Sports Shoes', 59.99)">Add to Cart</button>
+            <button class="btn-buy-now" onclick="openOrderModal('Sports Shoes', 59.99)">Order Now (COD)</button>
+        </div>
+
+    </main>
+
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Enter Delivery Details</h2>
+            <form id="orderForm" onsubmit="submitOrder(event)">
+                <input type="text" id="custName" placeholder="Your Full Name" required>
+                <input type="tel" id="custPhone" placeholder="Mobile Number" required>
+                <textarea id="custAddress" placeholder="Complete Delivery Address with Pincode" required></textarea>
+                <p><strong>Product:</strong> <span id="modalProdName"></span></p>
+                <p><strong>Total Price:</strong> $<span id="modalProdPrice"></span> (Cash on Delivery)</p>
+                <button type="submit" class="btn-confirm">Confirm Order</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let cartCount = 0;
+        let currentProduct = "";
+        let currentPrice = 0;
+
+        function addToCart(name, price) {
+            cartCount++;
+            document.getElementById('cart-count').innerText = cartCount;
+            alert(name + " has been added to your cart!");
+        }
+
+        function openOrderModal(name, price) {
+            currentProduct = name;
+            currentPrice = price;
+            document.getElementById('modalProdName').innerText = name;
+            document.getElementById('modalProdPrice').innerText = price;
+            document.getElementById('orderModal').style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById('orderModal').style.display = "none";
+        }
+
+        function submitOrder(event) {
+            event.preventDefault();
+            
+            const orderData = {
+                id: Math.floor(1000 + Math.random() * 9000), // Clean 4 digit ID
+                name: document.getElementById('custName').value.trim(),
+                phone: document.getElementById('custPhone').value.trim(),
+                address: document.getElementById('custAddress').value.trim(),
+                product: currentProduct,
+                price: currentPrice,
+                status: "Pending"
+            };
+
+            // Double check data retrieval and storage push
+            let orders = [];
+            try {
+                orders = JSON.parse(localStorage.getItem('dropship_orders')) || [];
+            } catch (e) {
+                orders = [];
+            }
+            
+            orders.push(orderData);
+            localStorage.setItem('dropship_orders', JSON.stringify(orders));
+
+            alert("Congratulations! Your order has been placed successfully.");
+            closeModal();
+            document.getElementById('orderForm').reset();
+        }
+    </script>
+</body>
+</html>
