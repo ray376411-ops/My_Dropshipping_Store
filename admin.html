@@ -21,14 +21,14 @@
 
     <header class="navbar">
         <div class="nav-container">
-            <div class="logo">MyStore - Operations Center</div>
-            <div><strong>Access Granted: Owner Anand</strong></div>
+            <div class="logo">MyStore - Operations Management Center</div>
+            <div><strong>Access Scope: Root Owner Anand</strong></div>
         </div>
     </header>
 
     <div class="dashboard-container">
         <div class="dashboard-header">
-            <h2>Realtime Incoming Customer Orders</h2>
+            <h2>Realtime Incoming Consumer Order Invoices</h2>
             <button onclick="loadOrders()" class="refresh-btn">🔄 Refresh Dashboard Stream</button>
         </div>
         
@@ -45,32 +45,32 @@
                 </tr>
             </thead>
             <tbody id="ordersTableBody">
-                <tr><td colspan="7" style="text-align:center; padding:30px; color:#888;">Establishing handshake pipeline with Google Apps Script...</td></tr>
+                <tr><td colspan="7" style="text-align:center; padding:30px; color:#888;">Establishing API network handshake pipeline with Google Apps Script node...</td></tr>
             </tbody>
         </table>
     </div>
 
     <script>
-        // Replace this URL with your NEW deployed Google Apps Script Web App URL
-        const scriptUrl = "YOUR_NEW_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
+        // Secure Target Endpoint Root Node Mapping Mapping
+        const scriptUrl = "https://script.google.com/macros/s/AKfycbwGIJL3yLifBJqWY6M8zyuLCx9Ri5WzlpWSb9PlqQ97tpD2iwCelj4zKahNttplzco8/exec";
 
         function loadOrders() {
             const tableBody = document.getElementById('ordersTableBody');
             
             fetch(scriptUrl, { method: 'GET', cache: 'no-cache' })
             .then(response => {
-                if (!response.ok) throw new Error('Data transmission error from core API');
+                if (!response.ok) throw new Error('Data transmission integrity validation failed from core API');
                 return response.json();
             })
             .then(data => {
                 tableBody.innerHTML = "";
                 
                 if (!data || data.length === 0) {
-                    tableBody.innerHTML = <tr><td colspan="7" style="text-align:center; padding:30px; color:#aaa;">No customer purchase data records found in backend sheet.</td></tr>;
+                    tableBody.innerHTML = <tr><td colspan="7" style="text-align:center; padding:30px; color:#aaa;">No consumer purchase metadata records found inside backend database storage.</td></tr>;
                     return;
                 }
 
-                // Map and loop from the most recent entries down to the oldest row
+                // Map database nodes and execute lifo loop structure (Newest first)
                 for (let i = data.length - 1; i >= 0; i--) {
                     const row = data[i];
                     
@@ -96,12 +96,12 @@
                 }
             })
             .catch(error => {
-                tableBody.innerHTML = <tr><td colspan="7" style="text-align:center; padding:30px; color:#d63031; font-weight:600;">Connection failed. Verify Google Apps Script Web App deployment status.</td></tr>;
+                tableBody.innerHTML = <tr><td colspan="7" style="text-align:center; padding:30px; color:#d63031; font-weight:600;">Data ingestion runtime error. Check Google Apps Script compilation parameters.</td></tr>;
                 console.error(error);
             });
         }
 
-        // Auto initialization stream sequence
+        // Auto-run routine initialization loop
         window.onload = loadOrders;
         setInterval(loadOrders, 12000); 
     </script>

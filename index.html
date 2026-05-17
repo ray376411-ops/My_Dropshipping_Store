@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MyStore - Premium Electronics & Fashion</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-family-icons/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
@@ -43,12 +43,13 @@
     <main class="products-container" id="products">
         <h2 class="section-title">Trending Products</h2>
         <div class="products-grid" id="productsGrid">
+            
             <div class="product-card" data-category="Gadgets" data-name="Premium Bluetooth Smartwatch">
                 <span class="badge hot">Hot</span>
                 <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=500&auto=format&fit=crop&q=60" alt="Smartwatch">
                 <div class="product-info">
                     <h3>Premium Bluetooth Smartwatch</h3>
-                    <p class="description">Full touch display, heart rate monitor, and sleep tracking.</p>
+                    <p class="description">Full touch display, heart rate monitor, and advanced sleep tracking telemetry.</p>
                     <div class="price-row">
                         <span class="price">$49.99</span>
                         <button class="buy-btn" onclick="openOrderModal('Premium Bluetooth Smartwatch', 49.99)">Buy Now</button>
@@ -60,7 +61,7 @@
                 <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&auto=format&fit=crop&q=60" alt="Shoes">
                 <div class="product-info">
                     <h3>Ultra Lightweight Sports Shoes</h3>
-                    <p class="description">Breathable mesh matrix design, perfect for running and training.</p>
+                    <p class="description">Breathable mesh matrix design, engineered perfectly for high-performance training.</p>
                     <div class="price-row">
                         <span class="price">$59.99</span>
                         <button class="buy-btn" onclick="openOrderModal('Ultra Lightweight Sports Shoes', 59.99)">Buy Now</button>
@@ -73,7 +74,7 @@
                 <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=60" alt="Headphones">
                 <div class="product-info">
                     <h3>Wireless Noise-Canceling Headphones</h3>
-                    <p class="description">High-fidelity audio with active ambient noise cancellation.</p>
+                    <p class="description">High-fidelity acoustic drivers equipped with active environmental noise isolation.</p>
                     <div class="price-row">
                         <span class="price">$79.99</span>
                         <button class="buy-btn" onclick="openOrderModal('Wireless Noise-Canceling Headphones', 79.99)">Buy Now</button>
@@ -81,48 +82,48 @@
                 </div>
             </div>
 
-            </div>
+        </div>
     </main>
 
     <section class="owner-add-section">
-        <button class="toggle-add-btn" onclick="toggleAddForm()"><i class="fas fa-plus-circle"></i> Owner Add New Product Entry</button>
+        <button class="toggle-add-btn" onclick="toggleAddForm()"><i class="fas fa-plus-circle"></i> Owner Product Listing Console</button>
         <div id="addProductForm" class="add-form-card hidden">
-            <h3>List a New Product on the Store</h3>
+            <h3>List a New Merchant Item on Storefront</h3>
             <div class="input-group">
-                <input type="text" id="newProdName" placeholder="Product Name">
-                <input type="number" id="newProdPrice" placeholder="Price ($)">
-                <input type="text" id="newProdDesc" placeholder="Short Description">
+                <input type="text" id="newProdName" placeholder="Product Title">
+                <input type="number" id="newProdPrice" placeholder="Price Valuation ($)">
+                <input type="text" id="newProdDesc" placeholder="Brief Features Description">
                 <select id="newProdCat">
                     <option value="Gadgets">Gadgets</option>
                     <option value="Footwear">Footwear</option>
                     <option value="Audio">Audio</option>
                 </select>
-                <input type="text" id="newProdImg" placeholder="Image URL (Unsplash or direct link)">
+                <input type="text" id="newProdImg" placeholder="Image Assets Web URL (Optional)">
             </div>
-            <button class="submit-product-btn" onclick="addNewProductToArray()">Publish to Storefront</button>
+            <button class="submit-product-btn" onclick="addNewProductToArray()">Publish to Active Grid</button>
         </div>
     </section>
 
     <div id="orderModal" class="modal hidden">
         <div class="modal-content">
             <span class="close-modal" onclick="closeOrderModal()">&times;</span>
-            <h2>Complete Your Order</h2>
+            <h2>Complete Purchase Dispatch</h2>
             <div class="modal-product-details">
-                <p><strong>Product:</strong> <span id="modalProductName">N/A</span></p>
-                <p><strong>Total Amount:</strong> <span id="modalProductPrice">$0.00</span></p>
+                <p><strong>Selected Item:</strong> <span id="modalProductName">N/A</span></p>
+                <p><strong>Total Invoice Amount:</strong> <span id="modalProductPrice">$0.00</span></p>
             </div>
             <form id="checkoutForm" onsubmit="submitOrder(event)">
                 <div class="form-group">
-                    <label for="custName">Full Name</label>
-                    <input type="text" id="custName" required placeholder="Enter your full name">
+                    <label for="custName">Customer Full Name</label>
+                    <input type="text" id="custName" required placeholder="First and last name registration">
                 </div>
                 <div class="form-group">
-                    <label for="custPhone">Phone Number</label>
-                    <input type="tel" id="custPhone" required placeholder="Enter 10-digit mobile number">
+                    <label for="custPhone">Contact Mobile Number</label>
+                    <input type="tel" id="custPhone" required placeholder="10-digit communication vector">
                 </div>
                 <div class="form-group">
-                    <label for="custAddress">Delivery Address</label>
-                    <textarea id="custAddress" required placeholder="Full shipping address with pincode"></textarea>
+                    <label for="custAddress">Shipping Destination Address</label>
+                    <textarea id="custAddress" required placeholder="Complete delivery route mapped with postal code"></textarea>
                 </div>
                 <button type="submit" id="submitBtn" class="confirm-order-btn">Confirm Order (Cash on Delivery)</button>
             </form>
@@ -130,12 +131,12 @@
     </div>
 
     <footer>
-        <p>&copy; 2026 MyStore Fulfillment Inc. Powered by Google Sheets Core Architecture.</p>
+        <p>&copy; 2026 MyStore Fulfillment Inc. Secure Core Database Node Connection Active.</p>
     </footer>
 
     <script>
-        // Replace this URL with your NEW deployed Google Apps Script Web App URL
-        const scriptUrl = "YOUR_NEW_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
+        // Dedicated Google Apps Script Secure Gateway Configuration Node
+        const scriptUrl = "https://script.google.com/macros/s/AKfycbwGIJL3yLifBJqWY6M8zyuLCx9Ri5WzlpWSb9PlqQ97tpD2iwCelj4zKahNttplzco8/exec";
 
         let activeProduct = "";
         let activePrice = 0;
@@ -156,7 +157,7 @@
         function submitOrder(e) {
             e.preventDefault();
             const submitBtn = document.getElementById('submitBtn');
-            submitBtn.innerText = "Processing Order...";
+            submitBtn.innerText = "Transmitting Packet...";
             submitBtn.disabled = true;
 
             const orderData = {
@@ -174,13 +175,13 @@
                 body: JSON.stringify(orderData)
             })
             .then(() => {
-                alert('Success! Your order has been registered under Cash on Delivery.');
+                alert('Success! Order pipeline updated under Cash on Delivery protocol.');
                 closeOrderModal();
                 submitBtn.innerText = "Confirm Order (Cash on Delivery)";
                 submitBtn.disabled = false;
             })
             .catch(err => {
-                alert('Error submitting order. Please check Web App logs.');
+                alert('Database handshake exception generated.');
                 console.error(err);
                 submitBtn.innerText = "Confirm Order (Cash on Delivery)";
                 submitBtn.disabled = false;
@@ -218,7 +219,7 @@
             const cat = document.getElementById('newProdCat').value;
             let img = document.getElementById('newProdImg').value || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&auto=format&fit=crop&q=60";
 
-            if(!name || !price) { alert("Please input name and price."); return; }
+            if(!name || !price) { alert("Execution halted: Missing Name/Price constraints."); return; }
 
             const grid = document.getElementById('productsGrid');
             const div = document.createElement('div');
@@ -238,9 +239,9 @@
                 </div>
             `;
             grid.appendChild(div);
-            alert("New product successfully listed on storefront window!");
+            alert("Dynamic merchant entry initialized successfully!");
             document.getElementById('addProductForm').classList.add('hidden');
         }
     </script>
 </body>
-</html>
+</html
