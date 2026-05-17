@@ -31,20 +31,20 @@
                 <textarea id="custAddress" placeholder="Complete Delivery Address with Pincode" required></textarea>
                 <p><strong>Product:</strong> <span id="modalProdName"></span></p>
                 <p><strong>Total Price:</strong> $<span id="modalProdPrice"></span> (Cash on Delivery)</p>
-                <button type="submit" class="btn-confirm">Confirm Order</button>
+                <button type="submit" class="btn-confirm" id="submitBtn">Confirm Order</button>
             </form>
         </div>
     </div>
 
     <script>
-        // List of all your products
+        const scriptUrl = "https://script.google.com/macros/s/AKfycby8tSZCuEDG-PBbcvgpTl9IIqIlOdqsHlzmYC7CSVL-astMMWO1zs3Rr7EeAWADgCQ/exec";
+
         const myProducts = [
             { id: 1, name: "Premium Bluetooth Smartwatch", price: 49.99, oldPrice: 99.99, image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500" },
             { id: 2, name: "Wireless Noise-Canceling Headphones", price: 79.99, oldPrice: 149.99, image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500" },
             { id: 3, name: "Ultra Lightweight Sports Shoes", price: 59.99, oldPrice: 119.99, image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500" }
         ];
 
-        // Function to display products dynamically
         function displayProducts() {
             const grid = document.getElementById('productGrid');
             grid.innerHTML = "";
@@ -85,9 +85,12 @@
             document.getElementById('orderModal').style.display = "none"; 
         }
 
-        // Submit order data to the shared browser storage
         function submitOrder(event) {
             event.preventDefault();
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.innerText = "Placing Order...";
+            submitBtn.disabled = true;
+
             const orderData = {
                 id: Math.floor(1000 + Math.random() * 9000),
                 name: document.getElementById('custName').value,
@@ -98,14 +101,26 @@
                 status: "Pending"
             };
 
-            // Using unified storage key 'global_store_orders'
-            let orders = JSON.parse(localStorage.getItem('global_store_orders')) || [];
-            orders.push(orderData);
-            localStorage.setItem('global_store_orders', JSON.stringify(orders));
-
-            alert("Congratulations! Your order has been placed successfully.");
-            closeModal();
-            document.getElementById('orderForm').reset();
+            fetch(scriptUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                cache: 'no-cache',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(orderData)
+            })
+            .then(() => {
+                alert("Congratulations! Your order has been placed successfully.");
+                closeModal();
+                document.getElementById('orderForm').reset();
+            })
+            .catch(error => {
+                alert("Error placing order. Please try again.");
+                console.error(error);
+            })
+            .finally(() => {
+                submitBtn.innerText = "Confirm Order";
+                submitBtn.disabled = false;
+            });
         }
     </script>
 </body>

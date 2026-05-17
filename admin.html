@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Owner Dashboard - My Store</title>
+    <title>Owner Dashboard - Live Orders</title>
     <link rel="stylesheet" href="style.css">
     <style>
         .dashboard-container { padding: 30px 5%; }
@@ -14,21 +14,20 @@
         .status-badge { padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
         .status-pending { background-color: #ffeaa7; color: #d63031; }
         .status-shipped { background-color: #badc58; color: #6ab04c; }
-        .action-btn { padding: 6px 12px; background-color: #2ed573; color: white; border-radius: 4px; border: none; cursor: pointer; }
-        .delete-btn { background-color: #ff4757; }
+        .refresh-btn { padding: 10px 20px; background-color: #2575fc; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">MyStore - Admin Panel</div>
-        <div><strong>Welcome, Owner</strong></div>
+        <div class="logo">MyStore - Google Sheets Admin Panel</div>
+        <div><strong>Welcome, Owner Anand</strong></div>
     </header>
 
     <div class="dashboard-container">
         <div class="dashboard-header">
-            <h2>Customer Orders Management</h2>
-            <button onclick="clearAllOrders()" class="action-btn delete-btn">Clear All Orders</button>
+            <h2>Live Customer Orders (From Google Sheet)</h2>
+            <button onclick="loadOrders()" class="refresh-btn">🔄 Refresh Orders</button>
         </div>
         
         <table class="order-table">
@@ -41,73 +40,56 @@
                     <th>Price</th>
                     <th>Delivery Address</th>
                     <th>Status</th>
-                    <th>Actions</th>
                 </tr>
             </thead>
-            <tbody id="ordersTableBody"></tbody>
+            <tbody id="ordersTableBody">
+                <tr><td colspan="7" style="text-align:center; padding:20px; color:#aaa;">Loading orders from Google Sheet...</td></tr>
+            </tbody>
         </table>
     </div>
 
     <script>
+        const scriptUrl = "https://script.google.com/macros/s/AKfycby8tSZCuEDG-PBbcvgpTl9IIqIlOdqsHlzmYC7CSVL-astMMWO1zs3Rr7EeAWADgCQ/exec";
+
         function loadOrders() {
             const tableBody = document.getElementById('ordersTableBody');
-            // Fetching data from matching key 'global_store_orders'
-            let orders = JSON.parse(localStorage.getItem('global_store_orders')) || [];
+            
+            fetch(scriptUrl)
+            .then(response => response.json())
+            .then(orders => {
+                tableBody.innerHTML = "";
 
-            tableBody.innerHTML = "";
+                if (orders.length === 0) {
+                    tableBody.innerHTML = <tr><td colspan="7" style="text-align:center; padding:20px; color:#aaa;">No orders found in Google Sheet.</td></tr>;
+                    return;
+                }
 
-            if (orders.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:20px; color:#aaa;">No orders received yet.</td></tr>`;
-                return;
-            }
+                // Show recent orders first
+                orders.reverse().forEach(order => {
+                    const tr = document.createElement('tr');
+                    const statusClass = order.status === 'Pending' ? 'status-pending' : 'status-shipped';
 
-            orders.forEach(order => {
-                const tr = document.createElement('tr');
-                const statusClass = order.status === 'Pending' ? 'status-pending' : 'status-shipped';
-
-                tr.innerHTML = `
-                    <td>#${order.id}</td>
-                    <td><strong>${order.name}</strong></td>
-                    <td>${order.phone}</td>
-                    <td>${order.product}</td>
-                    <td>$${order.price}</td>
-                    <td>${order.address}</td>
-                    <td><span class="status-badge ${statusClass}">${order.status}</span></td>
-                    <td>
-                        ${order.status === 'Pending' ? `<button class="action-btn" onclick="shipOrder(${order.id})">Mark Shipped</button>` : ''}
-                        <button class="action-btn delete-btn" onclick="deleteOrder(${order.id})">Delete</button>
-                    </td>
-                `;
-                tableBody.appendChild(tr);
+                    tr.innerHTML = `
+                        <td>#${order.id}</td>
+                        <td><strong>${order.name}</strong></td>
+                        <td>${order.phone}</td>
+                        <td>${order.product}</td>
+                        <td>$${order.price}</td>
+                        <td>${order.address}</td>
+                        <td><span class="status-badge ${statusClass}">${order.status}</span></td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+            })
+            .catch(error => {
+                tableBody.innerHTML = <tr><td colspan="7" style="text-align:center; padding:20px; color:red;">Error loading data from Google Sheet.</td></tr>;
+                console.error(error);
             });
         }
 
-        function shipOrder(orderId) {
-            let orders = JSON.parse(localStorage.getItem('global_store_orders')) || [];
-            orders = orders.map(order => { if (order.id === orderId) order.status = "Shipped"; return order; });
-            localStorage.setItem('global_store_orders', JSON.stringify(orders));
-            loadOrders();
-        }
-
-        function deleteOrder(orderId) {
-            if(confirm("Are you sure you want to delete this order?")) {
-                let orders = JSON.parse(localStorage.getItem('global_store_orders')) || [];
-                orders = orders.filter(order => order.id !== orderId);
-                localStorage.setItem('global_store_orders', JSON.stringify(orders));
-                loadOrders();
-            }
-        }
-
-        function clearAllOrders() {
-            if(confirm("Are you sure you want to delete all orders permanently?")) {
-                localStorage.removeItem('global_store_orders');
-                loadOrders();
-            }
-        }
-
         window.onload = loadOrders;
-        // Auto-refresh the dashboard table every 2 seconds to check for new incoming orders
-        setInterval(loadOrders, 2000); 
+        // Auto refresh table every 15 seconds
+        setInterval(loadOrders, 15000); 
     </script>
 </body>
 </html>
