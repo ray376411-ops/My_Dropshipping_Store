@@ -3,30 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Owner Dashboard - Live Orders</title>
+    <title>Owner Dashboard - Realtime Logistics Hub</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .dashboard-container { padding: 30px 5%; }
-        .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .dashboard-container { padding: 40px 5%; max-width: 1300px; margin: 0 auto; }
+        .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
         .order-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .order-table th, .order-table td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
-        .order-table th { background-color: #2575fc; color: white; }
-        .status-badge { padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+        .order-table th, .order-table td { padding: 16px; text-align: left; border-bottom: 1px solid #f1f2f6; }
+        .order-table th { background-color: #2575fc; color: white; font-weight: 600; text-transform: uppercase; font-size: 13px; letter-spacing: 0.5px; }
+        .status-badge { padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
         .status-pending { background-color: #ffeaa7; color: #d63031; }
-        .refresh-btn { padding: 10px 20px; background-color: #2575fc; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .refresh-btn { padding: 10px 22px; background-color: #2575fc; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 8px; }
+        .refresh-btn:hover { background-color: #1a5ecc; }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">MyStore - Google Sheets Admin Panel</div>
-        <div><strong>Welcome, Owner Anand</strong></div>
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">MyStore - Operations Center</div>
+            <div><strong>Access Granted: Owner Anand</strong></div>
+        </div>
     </header>
 
     <div class="dashboard-container">
         <div class="dashboard-header">
-            <h2>Live Customer Orders (Direct From Sheet)</h2>
-            <button onclick="loadOrders()" class="refresh-btn">🔄 Refresh Orders</button>
+            <h2>Realtime Incoming Customer Orders</h2>
+            <button onclick="loadOrders()" class="refresh-btn">🔄 Refresh Dashboard Stream</button>
         </div>
         
         <table class="order-table">
@@ -34,91 +37,73 @@
                 <tr>
                     <th>Order ID</th>
                     <th>Customer Name</th>
-                    <th>Phone</th>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Delivery Address</th>
-                    <th>Status</th>
+                    <th>Contact Phone</th>
+                    <th>Product Title</th>
+                    <th>Price Captured</th>
+                    <th>Shipping Destination</th>
+                    <th>Logistics Status</th>
                 </tr>
             </thead>
             <tbody id="ordersTableBody">
-                <tr><td colspan="7" style="text-align:center; padding:20px; color:#aaa;">Loading orders directly from Google Sheet...</td></tr>
+                <tr><td colspan="7" style="text-align:center; padding:30px; color:#888;">Establishing handshake pipeline with Google Apps Script...</td></tr>
             </tbody>
         </table>
     </div>
 
     <script>
-        const sheetId = "1egaxp52uQ6j1WxXQcfYMM327Htyj33I_aMsMo91Tx-U";
-        const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/pub?output=csv`;
+        // Replace this URL with your NEW deployed Google Apps Script Web App URL
+        const scriptUrl = "YOUR_NEW_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
 
         function loadOrders() {
             const tableBody = document.getElementById('ordersTableBody');
             
-            fetch(csvUrl, { method: 'GET', cache: 'no-cache' })
+            fetch(scriptUrl, { method: 'GET', cache: 'no-cache' })
             .then(response => {
-                if (!response.ok) throw new Error('Network response error');
-                return response.text();
+                if (!response.ok) throw new Error('Data transmission error from core API');
+                return response.json();
             })
-            .then(csvText => {
-                const lines = csvText.split(/\r?\n/);
+            .then(data => {
                 tableBody.innerHTML = "";
                 
-                let hasOrders = false;
+                if (!data || data.length === 0) {
+                    tableBody.innerHTML = <tr><td colspan="7" style="text-align:center; padding:30px; color:#aaa;">No customer purchase data records found in backend sheet.</td></tr>;
+                    return;
+                }
 
-                // Loop from newest rows to oldest (skipping header at index 0)
-                for (let i = lines.length - 1; i >= 1; i--) {
-                    const currentLine = lines[i].trim();
-                    if (!currentLine) continue;
+                // Map and loop from the most recent entries down to the oldest row
+                for (let i = data.length - 1; i >= 0; i--) {
+                    const row = data[i];
                     
-                    // Simple and clean comma split for the row
-                    const row = currentLine.split(',').map(item => item.replace(/^"|"$/g, '').trim());
-                    
-                    if (row.length < 5) continue;
-                    hasOrders = true;
-
-                    const orderId = row[0] || "N/A";
-                    const name = row[1] || "N/A";
-                    const phone = row[2] || "N/A";
-                    
-                    // Sheet structure mapping: Price is index 3, Product is index 4
-                    let price = row[3] || "N/A";
-                    let product = row[4] || "N/A";
-                    
-                    // Auto-correct safety check: If form swapped product text and price numbers, swap them back
-                    if (isNaN(price) && !isNaN(product)) {
-                        let temp = price;
-                        price = product;
-                        product = temp;
-                    }
-
-                    const address = row[5] || "N/A";
-                    const status = row[6] || "Pending";
+                    const orderId = row.Order_ID || "N/A";
+                    const name = row.Customer_Name || "N/A";
+                    const phone = row.Phone || "N/A";
+                    const product = row.Product || "N/A";
+                    const price = row.Price ? $${parseFloat(row.Price).toFixed(2)} : "N/A";
+                    const address = row.Address || "N/A";
+                    const status = row.Status || "Pending";
 
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
-                        <td>#${orderId}</td>
-                        <td><strong>${name}</strong></td>
+                        <td><strong>#${orderId}</strong></td>
+                        <td>${name}</td>
                         <td>${phone}</td>
-                        <td>${product}</td>
-                        <td>$${price}</td>
+                        <td><span style="color:#2575fc; font-weight:600;">${product}</span></td>
+                        <td><strong>${price}</strong></td>
                         <td>${address}</td>
                         <td><span class="status-badge status-pending">${status}</span></td>
                     `;
                     tableBody.appendChild(tr);
                 }
-
-                if (!hasOrders) {
-                    tableBody.innerHTML = <tr><td colspan="7" style="text-align:center; padding:20px; color:#aaa;">No orders found in Google Sheet.</td></tr>;
-                }
             })
             .catch(error => {
-                tableBody.innerHTML = <tr><td colspan="7" style="text-align:center; padding:20px; color:red;">Connection error. Please confirm your Google Sheet is published to the web.</td></tr>;
+                tableBody.innerHTML = <tr><td colspan="7" style="text-align:center; padding:30px; color:#d63031; font-weight:600;">Connection failed. Verify Google Apps Script Web App deployment status.</td></tr>;
                 console.error(error);
             });
         }
 
+        // Auto initialization stream sequence
         window.onload = loadOrders;
-        setInterval(loadOrders, 10000); 
+        setInterval(loadOrders, 12000); 
     </script>
 </body>
 </html>
