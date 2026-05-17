@@ -54,17 +54,17 @@
         function loadOrders() {
             const tableBody = document.getElementById('ordersTableBody');
             
-            fetch(scriptUrl)
-            .then(response => response.json())
-            .then(orders => {
+            const oldScript = document.getElementById('jsonpScript');
+            if (oldScript) oldScript.remove();
+
+            window.handleOrdersResponse = function(orders) {
                 tableBody.innerHTML = "";
 
-                if (orders.length === 0) {
+                if (!orders || orders.length === 0) {
                     tableBody.innerHTML = <tr><td colspan="7" style="text-align:center; padding:20px; color:#aaa;">No orders found in Google Sheet.</td></tr>;
                     return;
                 }
 
-                // Show recent orders first
                 orders.reverse().forEach(order => {
                     const tr = document.createElement('tr');
                     const statusClass = order.status === 'Pending' ? 'status-pending' : 'status-shipped';
@@ -80,16 +80,19 @@
                     `;
                     tableBody.appendChild(tr);
                 });
-            })
-            .catch(error => {
+            };
+
+            const script = document.createElement('script');
+            script.id = 'jsonpScript';
+            script.src = scriptUrl + "?callback=handleOrdersResponse";
+            script.onerror = function() {
                 tableBody.innerHTML = <tr><td colspan="7" style="text-align:center; padding:20px; color:red;">Error loading data from Google Sheet.</td></tr>;
-                console.error(error);
-            });
+            };
+            document.body.appendChild(script);
         }
 
         window.onload = loadOrders;
-        // Auto refresh table every 15 seconds
-        setInterval(loadOrders, 15000); 
+        setInterval(loadOrders, 10000); 
     </script>
 </body>
 </html>
