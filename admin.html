@@ -51,8 +51,8 @@
     </div>
 
     <script>
-        // Secure Target Endpoint Root Node Mapping Mapping
-        const scriptUrl = "https://script.google.com/macros/s/AKfycbwGIJL3yLifBJqWY6M8zyuLCx9Ri5WzlpWSb9PlqQ97tpD2iwCelj4zKahNttplzco8/exec";
+        // Secure Target Endpoint Root Node Mapping Mapping - UPDATED WITH YOUR NEW URL
+        const scriptUrl = "https://script.google.com/macros/s/AKfycbyMOWfLzr742-CeLnIWEI_-f2-vETiRWn8NKBDzRy3JnaRe4ZwDbOB24JFXilSLBL67/exec";
 
         function loadOrders() {
             const tableBody = document.getElementById('ordersTableBody');
@@ -78,7 +78,7 @@
                     const name = row.Customer_Name || "N/A";
                     const phone = row.Phone || "N/A";
                     const product = row.Product || "N/A";
-                    const price = row.Price ? $${parseFloat(row.Price).toFixed(2)} : "N/A";
+                    const price = row.Price ? ${parseFloat(row.Price).toFixed(2)} : "N/A";
                     const address = row.Address || "N/A";
                     const status = row.Status || "Pending";
 
