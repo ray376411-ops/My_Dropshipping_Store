@@ -10,12 +10,11 @@
         .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .order-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .order-table th, .order-table td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
-        .order-table th { background-color: #2575fc; color: white; font-weight: 600; }
-        .order-table tr:hover { background-color: #f9f9f9; }
+        .order-table th { background-color: #2575fc; color: white; }
         .status-badge { padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
         .status-pending { background-color: #ffeaa7; color: #d63031; }
         .status-shipped { background-color: #badc58; color: #6ab04c; }
-        .action-btn { padding: 6px 12px; background-color: #2ed573; color: white; border-radius: 4px; font-size: 13px; width: auto; display: inline-block; margin-right: 5px; }
+        .action-btn { padding: 6px 12px; background-color: #2ed573; color: white; border-radius: 4px; border: none; cursor: pointer; }
         .delete-btn { background-color: #ff4757; }
     </style>
 </head>
@@ -31,7 +30,7 @@
             <h2>Customer Orders Management</h2>
             <button onclick="clearAllOrders()" class="action-btn delete-btn">Clear All Orders</button>
         </div>
-
+        
         <table class="order-table">
             <thead>
                 <tr>
@@ -45,26 +44,20 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody id="ordersTableBody">
-                </tbody>
+            <tbody id="ordersTableBody"></tbody>
         </table>
     </div>
 
     <script>
         function loadOrders() {
             const tableBody = document.getElementById('ordersTableBody');
-            let orders = [];
-            
-            try {
-                orders = JSON.parse(localStorage.getItem('dropship_orders')) || [];
-            } catch(e) {
-                orders = [];
-            }
+            // Fetching data from matching key 'global_store_orders'
+            let orders = JSON.parse(localStorage.getItem('global_store_orders')) || [];
 
             tableBody.innerHTML = "";
 
             if (orders.length === 0) {
-                tableBody.innerHTML = <tr><td colspan="8" style="text-align:center; padding:30px; color:#aaa;">No orders received yet. Try placing an order on index.html and refresh this page.</td></tr>;
+                tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:20px; color:#aaa;">No orders received yet.</td></tr>`;
                 return;
             }
 
@@ -81,7 +74,7 @@
                     <td>${order.address}</td>
                     <td><span class="status-badge ${statusClass}">${order.status}</span></td>
                     <td>
-                        ${order.status === 'Pending' ? <button class="action-btn" onclick="shipOrder(${order.id})">Mark Shipped</button> : ''}
+                        ${order.status === 'Pending' ? `<button class="action-btn" onclick="shipOrder(${order.id})">Mark Shipped</button>` : ''}
                         <button class="action-btn delete-btn" onclick="deleteOrder(${order.id})">Delete</button>
                     </td>
                 `;
@@ -90,32 +83,31 @@
         }
 
         function shipOrder(orderId) {
-            let orders = JSON.parse(localStorage.getItem('dropship_orders')) || [];
-            orders = orders.map(order => {
-                if (order.id === orderId) order.status = "Shipped";
-                return order;
-            });
-            localStorage.setItem('dropship_orders', JSON.stringify(orders));
+            let orders = JSON.parse(localStorage.getItem('global_store_orders')) || [];
+            orders = orders.map(order => { if (order.id === orderId) order.status = "Shipped"; return order; });
+            localStorage.setItem('global_store_orders', JSON.stringify(orders));
             loadOrders();
         }
 
         function deleteOrder(orderId) {
-            if(confirm("Are you sure?")) {
-                let orders = JSON.parse(localStorage.getItem('dropship_orders')) || [];
+            if(confirm("Are you sure you want to delete this order?")) {
+                let orders = JSON.parse(localStorage.getItem('global_store_orders')) || [];
                 orders = orders.filter(order => order.id !== orderId);
-                localStorage.setItem('dropship_orders', JSON.stringify(orders));
+                localStorage.setItem('global_store_orders', JSON.stringify(orders));
                 loadOrders();
             }
         }
 
         function clearAllOrders() {
-            if(confirm("Clear everything?")) {
-                localStorage.removeItem('dropship_orders');
+            if(confirm("Are you sure you want to delete all orders permanently?")) {
+                localStorage.removeItem('global_store_orders');
                 loadOrders();
             }
         }
 
         window.onload = loadOrders;
+        // Auto-refresh the dashboard table every 2 seconds to check for new incoming orders
+        setInterval(loadOrders, 2000); 
     </script>
 </body>
 </html>

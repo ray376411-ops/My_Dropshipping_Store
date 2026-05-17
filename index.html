@@ -18,33 +18,8 @@
         <p>Order today and get Free Shipping worldwide!</p>
     </section>
 
-    <main class="products-container">
-        
-        <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500" alt="Smartwatch">
-            <h3>Premium Bluetooth Smartwatch</h3>
-            <p class="price">$49.99 <span class="old-price">$99.99</span></p>
-            <button class="btn-add-to-cart" onclick="addToCart('Premium Bluetooth Smartwatch', 49.99)">Add to Cart</button>
-            <button class="btn-buy-now" onclick="openOrderModal('Premium Bluetooth Smartwatch', 49.99)">Order Now (COD)</button>
-        </div>
-
-        <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500" alt="Headphones">
-            <h3>Wireless Noise-Canceling Headphones</h3>
-            <p class="price">$79.99 <span class="old-price">$149.99</span></p>
-            <button class="btn-add-to-cart" onclick="addToCart('Wireless Headphones', 79.99)">Add to Cart</button>
-            <button class="btn-buy-now" onclick="openOrderModal('Wireless Headphones', 79.99)">Order Now (COD)</button>
-        </div>
-
-        <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500" alt="Shoes">
-            <h3>Ultra Lightweight Sports Shoes</h3>
-            <p class="price">$59.99 <span class="old-price">$119.99</span></p>
-            <button class="btn-add-to-cart" onclick="addToCart('Sports Shoes', 59.99)">Add to Cart</button>
-            <button class="btn-buy-now" onclick="openOrderModal('Sports Shoes', 59.99)">Order Now (COD)</button>
-        </div>
-
-    </main>
+    <main class="products-container" id="productGrid">
+        </main>
 
     <div id="orderModal" class="modal">
         <div class="modal-content">
@@ -62,51 +37,71 @@
     </div>
 
     <script>
-        let cartCount = 0;
-        let currentProduct = "";
+        // List of all your products
+        const myProducts = [
+            { id: 1, name: "Premium Bluetooth Smartwatch", price: 49.99, oldPrice: 99.99, image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500" },
+            { id: 2, name: "Wireless Noise-Canceling Headphones", price: 79.99, oldPrice: 149.99, image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500" },
+            { id: 3, name: "Ultra Lightweight Sports Shoes", price: 59.99, oldPrice: 119.99, image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500" }
+        ];
+
+        // Function to display products dynamically
+        function displayProducts() {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = "";
+            myProducts.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}">
+                    <h3>${product.name}</h3>
+                    <p class="price">$${product.price} <span class="old-price">$${product.oldPrice}</span></p>
+                    <button class="btn-add-to-cart" onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
+                    <button class="btn-buy-now" onclick="openOrderModal('${product.name}', ${product.price})">Order Now (COD)</button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+        window.onload = displayProducts;
+
+        let cartCount = 0; 
+        let currentProduct = ""; 
         let currentPrice = 0;
 
-        function addToCart(name, price) {
-            cartCount++;
-            document.getElementById('cart-count').innerText = cartCount;
-            alert(name + " has been added to your cart!");
+        function addToCart(name, price) { 
+            cartCount++; 
+            document.getElementById('cart-count').innerText = cartCount; 
+            alert(name + " added to cart!"); 
         }
 
-        function openOrderModal(name, price) {
-            currentProduct = name;
-            currentPrice = price;
-            document.getElementById('modalProdName').innerText = name;
-            document.getElementById('modalProdPrice').innerText = price;
-            document.getElementById('orderModal').style.display = "block";
+        function openOrderModal(name, price) { 
+            currentProduct = name; 
+            currentPrice = price; 
+            document.getElementById('modalProdName').innerText = name; 
+            document.getElementById('modalProdPrice').innerText = price; 
+            document.getElementById('orderModal').style.display = "block"; 
         }
 
-        function closeModal() {
-            document.getElementById('orderModal').style.display = "none";
+        function closeModal() { 
+            document.getElementById('orderModal').style.display = "none"; 
         }
 
+        // Submit order data to the shared browser storage
         function submitOrder(event) {
             event.preventDefault();
-            
             const orderData = {
-                id: Math.floor(1000 + Math.random() * 9000), // Clean 4 digit ID
-                name: document.getElementById('custName').value.trim(),
-                phone: document.getElementById('custPhone').value.trim(),
-                address: document.getElementById('custAddress').value.trim(),
+                id: Math.floor(1000 + Math.random() * 9000),
+                name: document.getElementById('custName').value,
+                phone: document.getElementById('custPhone').value,
+                address: document.getElementById('custAddress').value,
                 product: currentProduct,
                 price: currentPrice,
                 status: "Pending"
             };
 
-            // Double check data retrieval and storage push
-            let orders = [];
-            try {
-                orders = JSON.parse(localStorage.getItem('dropship_orders')) || [];
-            } catch (e) {
-                orders = [];
-            }
-            
+            // Using unified storage key 'global_store_orders'
+            let orders = JSON.parse(localStorage.getItem('global_store_orders')) || [];
             orders.push(orderData);
-            localStorage.setItem('dropship_orders', JSON.stringify(orders));
+            localStorage.setItem('global_store_orders', JSON.stringify(orders));
 
             alert("Congratulations! Your order has been placed successfully.");
             closeModal();
