@@ -5,17 +5,40 @@
     <title>Trendspot Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 p-8">
-    <h1 class="text-3xl font-bold text-center mb-10">Trending Global Products</h1>
-    
-    <div id="product-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+<body class="bg-gray-50">
+
+    <nav class="p-6 bg-white shadow-md flex justify-between items-center">
+        <h1 class="text-2xl font-bold tracking-tight">TRENDSPOT</h1>
+        <button class="text-xl">🛒 Cart</button>
+    </nav>
+
+    <main class="max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-3 gap-8" id="product-grid">
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <img src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=600" class="w-full h-48 object-cover rounded-xl mb-4">
+            <h3 class="text-lg font-bold">Wireless Earbuds</h3>
+            <p class="text-indigo-600 font-bold mb-4">₹1,299</p>
+            <div class="flex gap-2">
+                <button onclick="addToCart('Wireless Earbuds', '₹1,299')" class="w-1/2 border border-black py-2 rounded-lg font-bold">Add to Cart</button>
+                <button onclick="showCheckout('Wireless Earbuds', '₹1,299')" class="w-1/2 bg-black text-white py-2 rounded-lg font-bold">Buy Now</button>
+            </div>
         </div>
+    </main>
+
+    <div id="checkoutModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+        <div class="bg-white p-8 rounded-2xl w-full max-w-md">
+            <h2 class="text-xl font-bold mb-4">COD Checkout</h2>
+            <input type="text" id="cName" placeholder="Full Name" class="w-full border p-2 mb-2 rounded">
+            <input type="text" id="cPhone" placeholder="Phone Number" class="w-full border p-2 mb-2 rounded">
+            <input type="text" id="cAddress" placeholder="Full Address" class="w-full border p-2 mb-2 rounded">
+            <input type="text" id="cPin" placeholder="Pin Code" class="w-full border p-2 mb-4 rounded">
+            <button onclick="placeCOD()" class="w-full bg-green-600 text-white py-2 rounded-lg">Confirm COD Order</button>
+            <button onclick="document.getElementById('checkoutModal').classList.add('hidden')" class="w-full mt-2 text-gray-500">Cancel</button>
+        </div>
+    </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
     <script>
-        // Your SDK Config
         const firebaseConfig = {
             apiKey: "AIzaSyAGMiL4zA9yM48RgxKaa30Ge8wPG_FDomk",
             authDomain: "trendspot-store.firebaseapp.com",
@@ -29,34 +52,33 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // Load Products from Firebase
-        db.ref('products/').on('value', (snapshot) => {
-            const grid = document.getElementById('product-grid');
-            grid.innerHTML = ""; // Clear existing
-            const products = snapshot.val();
-            
-            if (products) {
-                Object.keys(products).forEach(key => {
-                    const p = products[key];
-                    grid.innerHTML += `
-                        <div class="bg-white p-5 rounded-xl shadow-lg">
-                            <img src="${p.image}" class="w-full h-48 object-cover rounded-lg">
-                            <h2 class="text-xl font-bold mt-3">${p.title}</h2>
-                            <p class="text-indigo-600 font-bold text-lg">${p.price}</p>
-                            <button onclick="addToCart('${p.title}', '${p.price}')" 
-                                    class="w-full bg-black text-white py-2 mt-4 rounded-lg hover:bg-gray-800">
-                                Add to Cart
-                            </button>
-                        </div>`;
-                });
-            } else {
-                grid.innerHTML = "<p>No products found. Please add products via Admin Panel.</p>";
-            }
-        });
+        let currentProduct = "";
+        let currentPrice = "";
 
         function addToCart(title, price) {
-            alert("Added " + title + " to your cart!");
-            db.ref('orders/').push({ item: title, price: price, time: new Date().toLocaleTimeString() });
+            db.ref('cart/').push({ item: title, price: price });
+            alert(title + " added to Cart!");
+        }
+
+        function showCheckout(title, price) {
+            currentProduct = title;
+            currentPrice = price;
+            document.getElementById('checkoutModal').classList.remove('hidden');
+        }
+
+        function placeCOD() {
+            const order = {
+                name: document.getElementById('cName').value,
+                phone: document.getElementById('cPhone').value,
+                address: document.getElementById('cAddress').value,
+                pin: document.getElementById('cPin').value,
+                product: currentProduct,
+                price: currentPrice,
+                status: "Pending COD"
+            };
+            db.ref('orders/').push(order);
+            alert("Order placed successfully!");
+            document.getElementById('checkoutModal').classList.add('hidden');
         }
     </script>
 </body>
