@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OP300 Premium Store</title>
+    <title>TREND SPOT | Premium Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50">
 
     <nav class="bg-white p-5 shadow-sm sticky top-0 z-50">
         <div class="max-w-6xl mx-auto">
-            <h1 class="text-3xl font-extrabold text-blue-600 tracking-tighter">OP300 STORE</h1>
+            <h1 class="text-3xl font-extrabold text-blue-600 tracking-tighter">TREND SPOT</h1>
         </div>
     </nav>
 
@@ -41,32 +41,28 @@
         const db = firebase.database();
 
         const products = [
-            // Electronics
-            { title: "Wireless Headphones", price: "₹1,999", cat: "Electronics" },
-            { title: "Smart Watch", price: "₹2,499", cat: "Electronics" },
-            { title: "Bluetooth Speaker", price: "₹999", cat: "Electronics" },
-            // Footwear
-            { title: "Running Shoes", price: "₹1,299", cat: "Footwear" },
-            { title: "Casual Sneakers", price: "₹999", cat: "Footwear" },
-            { title: "Formal Leather Shoes", price: "₹1,899", cat: "Footwear" },
-            // Accessories
-            { title: "Leather Wallet", price: "₹499", cat: "Accessories" },
-            { title: "Premium Sunglasses", price: "₹599", cat: "Accessories" },
-            { title: "Classic Wristwatch", price: "₹1,200", cat: "Accessories" },
-            // Home & Kitchen
-            { title: "Water Bottle", price: "₹299", cat: "Home & Kitchen" },
-            { title: "Desk Lamp", price: "₹799", cat: "Home & Kitchen" },
-            { title: "Kitchen Knife Set", price: "₹1,099", cat: "Home & Kitchen" },
-            // Fitness
-            { title: "Gym Shaker", price: "₹399", cat: "Fitness" },
-            { title: "Yoga Mat", price: "₹699", cat: "Fitness" },
-            { title: "Resistance Bands", price: "₹450", cat: "Fitness" }
+            { title: "Wireless Headphones", price: "₹1,999", cat: "Electronics", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500" },
+            { title: "Smart Watch", price: "₹2,499", cat: "Electronics", img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500" },
+            { title: "Bluetooth Speaker", price: "₹999", cat: "Electronics", img: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500" },
+            { title: "Running Shoes", price: "₹1,299", cat: "Footwear", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500" },
+            { title: "Casual Sneakers", price: "₹999", cat: "Footwear", img: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=500" },
+            { title: "Formal Shoes", price: "₹1,899", cat: "Footwear", img: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500" },
+            { title: "Leather Wallet", price: "₹499", cat: "Accessories", img: "https://images.unsplash.com/photo-1627123424574-724758594693?w=500" },
+            { title: "Sunglasses", price: "₹599", cat: "Accessories", img: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=500" },
+            { title: "Wristwatch", price: "₹1,200", cat: "Accessories", img: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=500" },
+            { title: "Water Bottle", price: "₹299", cat: "Home & Kitchen", img: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=500" },
+            { title: "Desk Lamp", price: "₹799", cat: "Home & Kitchen", img: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=500" },
+            { title: "Kitchen Set", price: "₹1,099", cat: "Home & Kitchen", img: "https://images.unsplash.com/photo-1556911220-e15b29be8c8b?w=500" },
+            { title: "Gym Shaker", price: "₹399", cat: "Fitness", img: "https://images.unsplash.com/photo-1581006852262-e4307c62d04f?w=500" },
+            { title: "Yoga Mat", price: "₹699", cat: "Fitness", img: "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=500" },
+            { title: "Resistance Bands", price: "₹450", cat: "Fitness", img: "https://images.unsplash.com/photo-1598289450703-911181510202?w=500" }
         ];
 
         function loadProducts() {
             const grid = document.getElementById('product-grid');
             grid.innerHTML = products.map(p => `
-                <div class="bg-white p-6 rounded-3xl shadow-md border border-gray-100 hover:shadow-xl transition">
+                <div class="bg-white p-4 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl transition">
+                    <img src="${p.img}" class="w-full h-48 object-cover rounded-2xl mb-4">
                     <span class="text-xs font-bold text-blue-500 uppercase tracking-widest">${p.cat}</span>
                     <h3 class="text-xl font-bold text-gray-800 mt-1 mb-2">${p.title}</h3>
                     <p class="text-2xl font-black text-blue-600 mb-6">${p.price}</p>
@@ -80,7 +76,7 @@
 
         function addToCart(title, price) {
             db.ref('cart/').push({ item: title, price: price });
-            alert(title + " has been added to your cart!");
+            alert(title + " added to your cart!");
         }
 
         function openCheckout(title, price) {
@@ -102,7 +98,7 @@
             };
             if(data.name && data.phone) {
                 db.ref('orders/').push(data);
-                alert("Order placed successfully! Thank you.");
+                alert("Order placed successfully!");
                 closeModal();
             } else {
                 alert("Please fill in all details.");
