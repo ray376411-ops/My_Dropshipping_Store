@@ -3,245 +3,401 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyStore - Premium Electronics & Fashion</title>
+    <title>Trending Store | Premium Dropshipping Hub</title>
+    <!-- Premium Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
+    <!-- Announcement Notification Bar -->
+    <div class="promo-bar">
+        <p>⚡ FAST SHIPPING WORLDWIDE • TIME LIMITED OFFERS ON ALL TRENDING CATEGORIES ⚡</p>
+    </div>
+
+    <!-- Navigation Header Bar -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="logo"><i class="fas fa-shopping-bag"></i> MyStore</div>
-            <div class="search-box">
-                <input type="text" id="searchBar" placeholder="Search for products..." onkeyup="filterProducts()">
-                <button><i class="fas fa-search"></i></button>
-            </div>
-            <div class="nav-links">
-                <a href="#products"><i class="fas fa-box"></i> Shop</a>
-                <a href="admin.html" class="admin-link"><i class="fas fa-user-shield"></i> Admin Panel</a>
+            <a href="#" class="nav-logo"><i class="fa-solid fa-bolt"></i> TRENDS<span>POT</span></a>
+            <div class="nav-actions">
+                <button class="admin-access-btn" id="openAdminBtn"><i class="fa-solid fa-user-lock"></i> Staff Login</button>
             </div>
         </div>
     </nav>
 
-    <header class="hero-banner">
-        <div class="hero-content">
-            <h1>Upgrade Your Lifestyle</h1>
-            <p>Exclusive deals on premium smartwatches, athletic footwear, and audio gear.</p>
-            <a href="#products" class="cta-btn">Shop Now <i class="fas fa-arrow-down"></i></a>
+    <!-- Visual Hero Spotlight Area -->
+    <header class="hero-showcase">
+        <div class="hero-overlay-content">
+            <span class="category-badge">Curated Inventory 2026</span>
+            <h1>Unleash The Power Of <br>Trending Global Products</h1>
+            <p>Direct supply networks bringing hot, viral, and high-demand products straight to your doorstep with zero middleman markup.</p>
+            <a href="#marketplace-grid" class="explore-cta-btn">Shop The Collection <i class="fa-solid fa-arrow-down"></i></a>
         </div>
     </header>
 
-    <section class="categories-section">
-        <div class="category-tabs">
-            <button class="tab-btn active" onclick="filterCategory('all')">All Products</button>
-            <button class="tab-btn" onclick="filterCategory('Gadgets')">Gadgets</button>
-            <button class="tab-btn" onclick="filterCategory('Footwear')">Footwear</button>
-            <button class="tab-btn" onclick="filterCategory('Audio')">Audio</button>
+    <!-- Main Marketplace Dynamic Display -->
+    <main class="marketplace-wrapper" id="marketplace-grid">
+        
+        <!-- Interactive Category Sorting Tabs -->
+        <div class="category-filter-container">
+            <h3 class="filter-headline">Select Category Matrix</h3>
+            <div class="filter-tabs-group" id="categoryFilterTabs">
+                <button class="tab-item active" data-filter="all">🔥 All Products</button>
+                <button class="tab-item" data-filter="Electronics">🔌 Electronics</button>
+                <button class="tab-item" data-filter="Fashion">👕 Fashion</button>
+                <button class="tab-item" data-filter="Home Decor">🏠 Home Decor</button>
+                <button class="tab-item" data-filter="Gadgets">📱 Smart Gadgets</button>
+            </div>
         </div>
-    </section>
 
-    <main class="products-container" id="products">
-        <h2 class="section-title">Trending Products</h2>
-        <div class="products-grid" id="productsGrid">
-            
-            <div class="product-card" data-category="Gadgets" data-name="Premium Bluetooth Smartwatch">
-                <span class="badge hot">Hot</span>
-                <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=500&auto=format&fit=crop&q=60" alt="Smartwatch">
-                <div class="product-info">
-                    <h3>Premium Bluetooth Smartwatch</h3>
-                    <p class="description">Full touch display, heart rate monitor, and advanced sleep tracking telemetry.</p>
-                    <div class="price-row">
-                        <span class="price">$49.99</span>
-                        <button class="buy-btn" onclick="openOrderModal('Premium Bluetooth Smartwatch', 49.99)">Buy Now</button>
-                    </div>
-                </div>
+        <!-- Dynamic Product Display Grid Grid Layout -->
+        <div class="catalog-grid" id="catalogGrid">
+            <!-- Fetching Network Spinner UI -->
+            <div class="network-spinner" id="catalogSpinner">
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                <p>Synchronizing global product feed streams directly from cloud matrix...</p>
             </div>
-
-            <div class="product-card" data-category="Footwear" data-name="Ultra Lightweight Sports Shoes">
-                <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&auto=format&fit=crop&q=60" alt="Shoes">
-                <div class="product-info">
-                    <h3>Ultra Lightweight Sports Shoes</h3>
-                    <p class="description">Breathable mesh matrix design, engineered perfectly for high-performance training.</p>
-                    <div class="price-row">
-                        <span class="price">$59.99</span>
-                        <button class="buy-btn" onclick="openOrderModal('Ultra Lightweight Sports Shoes', 59.99)">Buy Now</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card" data-category="Audio" data-name="Wireless Noise-Canceling Headphones">
-                <span class="badge sale">Sale</span>
-                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=60" alt="Headphones">
-                <div class="product-info">
-                    <h3>Wireless Noise-Canceling Headphones</h3>
-                    <p class="description">High-fidelity acoustic drivers equipped with active environmental noise isolation.</p>
-                    <div class="price-row">
-                        <span class="price">$79.99</span>
-                        <button class="buy-btn" onclick="openOrderModal('Wireless Noise-Canceling Headphones', 79.99)">Buy Now</button>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </main>
 
-    <section class="owner-add-section">
-        <button class="toggle-add-btn" onclick="toggleAddForm()"><i class="fas fa-plus-circle"></i> Owner Product Listing Console</button>
-        <div id="addProductForm" class="add-form-card hidden">
-            <h3>List a New Merchant Item on Storefront</h3>
-            <div class="input-group">
-                <input type="text" id="newProdName" placeholder="Product Title">
-                <input type="number" id="newProdPrice" placeholder="Price Valuation ($)">
-                <input type="text" id="newProdDesc" placeholder="Brief Features Description">
-                <select id="newProdCat">
-                    <option value="Gadgets">Gadgets</option>
-                    <option value="Footwear">Footwear</option>
-                    <option value="Audio">Audio</option>
-                </select>
-                <input type="text" id="newProdImg" placeholder="Image Assets Web URL (Optional)">
+    <!-- Customer Checkout Transaction Slip Modal Container -->
+    <div class="checkout-modal-overlay" id="checkoutModal">
+        <div class="modal-body-wrapper">
+            <div class="modal-title-header">
+                <h3><i class="fa-solid fa-truck-fast"></i> Delivery Invoice Setup</h3>
+                <span class="dismiss-modal-btn" id="dismissCheckoutBtn">&times;</span>
             </div>
-            <button class="submit-product-btn" onclick="addNewProductToArray()">Publish to Active Grid</button>
-        </div>
-    </section>
+            <form id="customerPurchaseForm" class="modal-interactive-form">
+                <input type="hidden" id="targetProductTitle">
+                <input type="hidden" id="targetProductPrice">
+                
+                <div class="purchase-preview-card">
+                    <p>Selected Item: <strong id="previewTitleDisplay">-</strong></p>
+                    <p>Price Due: <strong id="previewPriceDisplay">-</strong></p>
+                </div>
 
-    <div id="orderModal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeOrderModal()">&times;</span>
-            <h2>Complete Purchase Dispatch</h2>
-            <div class="modal-product-details">
-                <p><strong>Selected Item:</strong> <span id="modalProductName">N/A</span></p>
-                <p><strong>Total Invoice Amount:</strong> <span id="modalProductPrice">$0.00</span></p>
-            </div>
-            <form id="checkoutForm" onsubmit="submitOrder(event)">
-                <div class="form-group">
-                    <label for="custName">Customer Full Name</label>
-                    <input type="text" id="custName" required placeholder="First and last name registration">
+                <div class="input-form-row">
+                    <label for="shippingName">Customer Name</label>
+                    <input type="text" id="shippingName" placeholder="Enter complete first & last name" required>
                 </div>
-                <div class="form-group">
-                    <label for="custPhone">Contact Mobile Number</label>
-                    <input type="tel" id="custPhone" required placeholder="10-digit communication vector">
+                <div class="input-form-row">
+                    <label for="shippingPhone">Mobile Contact Number</label>
+                    <input type="tel" id="shippingPhone" placeholder="10-Digit mobile number required" required>
                 </div>
-                <div class="form-group">
-                    <label for="custAddress">Shipping Destination Address</label>
-                    <textarea id="custAddress" required placeholder="Complete delivery route mapped with postal code"></textarea>
+                <div class="input-form-row">
+                    <label for="shippingAddress">Full Shipping Destination Address</label>
+                    <textarea id="shippingAddress" rows="3" placeholder="House/Flat number, Street name, Landmark, City & Pincode" required></textarea>
                 </div>
-                <button type="submit" id="submitBtn" class="confirm-order-btn">Confirm Order (Cash on Delivery)</button>
+                <div class="input-form-row">
+                    <label for="shippingQuantity">Order Item Quantity</label>
+                    <input type="number" id="shippingQuantity" value="1" min="1" required>
+                </div>
+
+                <button type="submit" class="execute-order-btn" id="confirmOrderBtn">Process Order (Cash On Delivery Available)</button>
             </form>
         </div>
     </div>
 
-    <footer>
-        <p>&copy; 2026 MyStore Fulfillment Inc. Secure Core Database Node Connection Active.</p>
-    </footer>
+    <!-- SECRET SECURITY AUTH GATEWAY MODAL -->
+    <div class="checkout-modal-overlay" id="securityGatewayModal">
+        <div class="modal-body-wrapper strict-auth-width">
+            <div class="modal-title-header">
+                <h3><i class="fa-solid fa-shield-halved"></i> Verification Gate</h3>
+                <span class="dismiss-modal-btn" id="dismissAuthBtn">&times;</span>
+            </div>
+            <div class="modal-interactive-form">
+                <div class="input-form-row">
+                    <label for="securityKeyInput">Enter Master Security Password</label>
+                    <input type="password" id="securityKeyInput" placeholder="••••••••" required>
+                </div>
+                <button class="execute-order-btn" id="authenticateKeyBtn">Unlock Command Dashboard</button>
+                <p id="securityAlertBox" class="alert-error-notification"></p>
+            </div>
+        </div>
+    </div>
 
-    <script>
-        // Dedicated Google Apps Script Secure Gateway Configuration Node
-        const scriptUrl = "https://script.google.com/macros/s/AKfycbwGIJL3yLifBJqWY6M8zyuLCx9Ri5WzlpWSb9PlqQ97tpD2iwCelj4zKahNttplzco8/exec";
+    <!-- MASTER ADMIN MANAGEMENT ENVELOPE (Totally hidden by default until verification passes) -->
+    <div class="admin-shell-dashboard" id="masterAdminDashboard">
+        <div class="dashboard-viewport-box">
+            <div class="dashboard-top-nav">
+                <h2><i class="fa-solid fa-gears"></i> Operations Control Terminal</h2>
+                <div class="terminal-actions">
+                    <button class="sync-data-btn" id="syncOrdersBtn"><i class="fa-solid fa-rotate"></i> Fetch Cloud Orders</button>
+                    <button class="exit-terminal-btn" id="exitDashboardBtn"><i class="fa-solid fa-power-off"></i> Exit Dashboard</button>
+                </div>
+            </div>
 
-        let activeProduct = "";
-        let activePrice = 0;
+            <div class="dashboard-split-layout">
+                <!-- Left Block: Add Product -->
+                <div class="terminal-card">
+                    <h3><i class="fa-solid fa-circle-plus"></i> Launch Product Entry Pipeline</h3>
+                    <form id="newProductPipelineForm" class="modal-interactive-form">
+                        <div class="input-form-row">
+                            <label for="newProdTitle">Product Label Designation</label>
+                            <input type="text" id="newProdTitle" placeholder="e.g., Sonic Pro Elite ANC Earbuds" required>
+                        </div>
+                        <div class="input-form-row">
+                            <label for="newProdCategory">Assigned Catalog Category</label>
+                            <select id="newProdCategory" required>
+                                <option value="Electronics">Electronics</option>
+                                <option value="Fashion">Fashion</option>
+                                <option value="Home Decor">Home Decor</option>
+                                <option value="Gadgets">Smart Gadgets</option>
+                            </select>
+                        </div>
+                        <div class="input-form-row">
+                            <label for="newProdPrice">Base Sale Valuation Price</label>
+                            <input type="number" id="newProdPrice" placeholder="e.g., 2499" required>
+                        </div>
+                        <div class="input-form-row">
+                            <label for="newProdImage">Direct Product Image URL Link</label>
+                            <input type="url" id="newProdImage" placeholder="https://images.unsplash.com/... or cloud image links" required>
+                        </div>
+                        <div class="input-form-row">
+                            <label for="newProdDesc">Marketing Specifications & Description</label>
+                            <textarea id="newProdDesc" rows="3" placeholder="Input structural details, shipping notes and specifications..." required></textarea>
+                        </div>
+                        <button type="submit" class="execute-order-btn pipeline-success-bg" id="publishProductBtn">Upload Active Feed To Store</button>
+                    </form>
+                </div>
 
-        function openOrderModal(name, price) {
-            activeProduct = name;
-            activePrice = price;
-            document.getElementById('modalProductName').innerText = name;
-            document.getElementById('modalProductPrice').innerText = '$' + price;
-            document.getElementById('orderModal').classList.remove('hidden');
-        }
-
-        function closeOrderModal() {
-            document.getElementById('orderModal').classList.add('hidden');
-            document.getElementById('checkoutForm').reset();
-        }
-
-        function submitOrder(e) {
-            e.preventDefault();
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.innerText = "Transmitting Packet...";
-            submitBtn.disabled = true;
-
-            const orderData = {
-                name: document.getElementById('custName').value,
-                phone: document.getElementById('custPhone').value,
-                address: document.getElementById('custAddress').value,
-                product: activeProduct,
-                price: activePrice
-            };
-
-            fetch(scriptUrl, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(orderData)
-            })
-            .then(() => {
-                alert('Success! Order pipeline updated under Cash on Delivery protocol.');
-                closeOrderModal();
-                submitBtn.innerText = "Confirm Order (Cash on Delivery)";
-                submitBtn.disabled = false;
-            })
-            .catch(err => {
-                alert('Database handshake exception generated.');
-                console.error(err);
-                submitBtn.innerText = "Confirm Order (Cash on Delivery)";
-                submitBtn.disabled = false;
-            });
-        }
-
-        function filterProducts() {
-            const query = document.getElementById('searchBar').value.toLowerCase();
-            const cards = document.querySelectorAll('.product-card');
-            cards.forEach(card => {
-                const name = card.getAttribute('data-name').toLowerCase();
-                if(name.includes(query)) card.style.display = "block";
-                else card.style.display = "none";
-            });
-        }
-
-        function filterCategory(cat) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            const cards = document.querySelectorAll('.product-card');
-            cards.forEach(card => {
-                if(cat === 'all' || card.getAttribute('data-category') === cat) card.style.display = "block";
-                else card.style.display = "none";
-            });
-        }
-
-        function toggleAddForm() {
-            document.getElementById('addProductForm').classList.toggle('hidden');
-        }
-
-        function addNewProductToArray() {
-            const name = document.getElementById('newProdName').value;
-            const price = document.getElementById('newProdPrice').value;
-            const desc = document.getElementById('newProdDesc').value;
-            const cat = document.getElementById('newProdCat').value;
-            let img = document.getElementById('newProdImg').value || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&auto=format&fit=crop&q=60";
-
-            if(!name || !price) { alert("Execution halted: Missing Name/Price constraints."); return; }
-
-            const grid = document.getElementById('productsGrid');
-            const div = document.createElement('div');
-            div.className = "product-card";
-            div.setAttribute('data-category', cat);
-            div.setAttribute('data-name', name);
-            div.innerHTML = `
-                <span class="badge dynamic">New</span>
-                <img src="${img}" alt="${name}">
-                <div class="product-info">
-                    <h3>${name}</h3>
-                    <p class="description">${desc}</p>
-                    <div class="price-row">
-                        <span class="price">$${parseFloat(price).toFixed(2)}</span>
-                        <button class="buy-btn" onclick="openOrderModal('${name}', ${price})">Buy Now</button>
+                <!-- Right Block: Orders Table -->
+                <div class="terminal-card orders-stretch-card">
+                    <h3><i class="fa-solid fa-receipt"></i> Active Consumer Orders Inbound</h3>
+                    <div class="table-scroll-container">
+                        <table class="data-stream-table">
+                            <thead>
+                                <tr>
+                                    <th>ID String</th>
+                                    <th>Client Particulars</th>
+                                    <th>Target Item Matrix</th>
+                                    <th>Logistics Route Map</th>
+                                    <th>Operational State</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersTableStream">
+                                <!-- Populated dynamically from Google Sheet Data -->
+                            </tbody>
+                        </table>
+                        <div class="network-spinner" id="ordersDataSpinner" style="display:none;">
+                            <i class="fa-solid fa-circle-notch fa-spin"></i>
+                            <p>Loading database sync files...</p>
+                        </div>
                     </div>
                 </div>
-            `;
-            grid.appendChild(div);
-            alert("Dynamic merchant entry initialized successfully!");
-            document.getElementById('addProductForm').classList.add('hidden');
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert Toast Feedback Widget -->
+    <div id="statusToastBox" class="floating-toast-alert"></div>
+
+    <!-- INLINE FRONTEND LOGIC COMPONENT (Fully Wired) -->
+    <script>
+        const CLOUD_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxxBV1vJv3_eh2oYXaR5E1xIX0ZiuOiezUbMvaQtsF5YHtoONxAoFUQLFMpkcQKovtr/exec"; 
+        const MASTER_GATEWAY_PASSWORD = "Admin@Anand2026"; 
+
+        let globalCatalogCache = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadLiveCatalogStream();
+            bindUserInterfaceActions();
+        });
+
+        async function loadLiveCatalogStream() {
+            try {
+                document.getElementById('catalogSpinner').style.display = 'block';
+                const connection = await fetch(CLOUD_WEB_APP_URL);
+                globalCatalogCache = await connection.json();
+                renderMarketplaceCards(globalCatalogCache);
+            } catch (err) {
+                console.error(err);
+                document.getElementById('catalogGrid').innerHTML = <p class='alert-error-notification' style='grid-column:1/-1; text-align:center;'>Database sync failure. Verify sheet cells configuration array parameters.</p>;
+            } finally {
+                document.getElementById('catalogSpinner').style.display = 'none';
+            }
+        }
+
+        function renderMarketplaceCards(itemsList) {
+            const spinnerObj = document.getElementById('catalogSpinner');
+            const gridContainer = document.getElementById('catalogGrid');
+            gridContainer.innerHTML = '';
+            if(spinnerObj) gridContainer.appendChild(spinnerObj);
+
+            if(itemsList.length === 0) {
+                gridContainer.innerHTML += <p style='grid-column:1/-1; text-align:center; color: #64748b; padding: 40px 0;'>No active inventory matched your structural selections.</p>;
+                return;
+            }
+
+            itemsList.forEach(p => {
+                const node = document.createElement('div');
+                node.className = 'inventory-card';
+                node.innerHTML = `
+                    <div class="frame-media-holder">
+                        <span class="tag-meta-label">${p.category}</span>
+                        <img src="${p.image || 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?q=80&w=400'}" alt="${p.title}">
+                    </div>
+                    <div class="card-details-payload">
+                        <h4>${p.title}</h4>
+                        <p>${p.description ? p.description.substring(0, 85) + '...' : 'Premium hot drop high utility trending commodity bundle.'}</p>
+                        <div class="card-price-callout">
+                            <span class="numeric-price">₹${p.price}</span>
+                            <button class="buy-action-trigger" onclick="initiateCheckoutProcess('${p.title.replace(/'/g, "\\'")}', '${p.price}')">Order Now</button>
+                        </div>
+                    </div>
+                `;
+                gridContainer.appendChild(node);
+            });
+        }
+
+        document.getElementById('categoryFilterTabs').addEventListener('click', (e) => {
+            if(!e.target.classList.contains('tab-item')) return;
+            document.querySelectorAll('.tab-item').forEach(btn => btn.classList.remove('active'));
+            e.target.classList.add('active');
+
+            const queryFilter = e.target.getAttribute('data-filter');
+            if(queryFilter === 'all') {
+                renderMarketplaceCards(globalCatalogCache);
+            } else {
+                renderMarketplaceCards(globalCatalogCache.filter(item => item.category === queryFilter));
+            }
+        });
+
+        window.initiateCheckoutProcess = (title, price) => {
+            document.getElementById('targetProductTitle').value = title;
+            document.getElementById('targetProductPrice').value = price;
+            document.getElementById('previewTitleDisplay').innerText = title;
+            document.getElementById('previewPriceDisplay').innerText = ₹${price};
+            document.getElementById('checkoutModal').style.display = 'flex';
+        };
+
+        document.getElementById('customerPurchaseForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const processBtn = document.getElementById('confirmOrderBtn');
+            processBtn.innerText = "Transmitting Packet File Envelopes...";
+            processBtn.disabled = true;
+
+            const orderPayload = {
+                action: "addOrder",
+                orderId: "ORD-" + Date.now().toString().substring(6),
+                customerName: document.getElementById('shippingName').value.trim(),
+                phone: document.getElementById('shippingPhone').value.trim(),
+                address: document.getElementById('shippingAddress').value.trim(),
+                productTitle: document.getElementById('targetProductTitle').value,
+                quantity: parseInt(document.getElementById('shippingQuantity').value),
+                status: "Pending"
+            };
+
+            try {
+                await fetch(CLOUD_WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderPayload)
+                });
+                triggerStatusToastAlert("🎉 Order Placed Safely! Cash on Delivery confirmed.");
+                document.getElementById('customerPurchaseForm').reset();
+                document.getElementById('checkoutModal').style.display = 'none';
+            } catch(ex) {
+                triggerStatusToastAlert("❌ Transmission handshake failed network validation check.");
+            } finally {
+                processBtn.innerText = "Confirm Order (Cash On Delivery Available)";
+                processBtn.disabled = false;
+            }
+        });
+
+        function bindUserInterfaceActions() {
+            document.getElementById('openAdminBtn').onclick = () => {
+                document.getElementById('securityGatewayModal').style.display = 'flex';
+                document.getElementById('securityKeyInput').focus();
+            };
+            document.getElementById('dismissCheckoutBtn').onclick = () => document.getElementById('checkoutModal').style.display = 'none';
+            document.getElementById('dismissAuthBtn').onclick = () => {
+                document.getElementById('securityGatewayModal').style.display = 'none';
+                document.getElementById('securityAlertBox').innerText = '';
+            };
+            document.getElementById('exitDashboardBtn').onclick = () => document.getElementById('masterAdminDashboard').style.display = 'none';
+
+            document.getElementById('authenticateKeyBtn').onclick = () => {
+                const key = document.getElementById('securityKeyInput').value;
+                const errBox = document.getElementById('securityAlertBox');
+                if(key === MASTER_GATEWAY_PASSWORD) {
+                    errBox.innerText = '';
+                    document.getElementById('securityGatewayModal').style.display = 'none';
+                    document.getElementById('securityKeyInput').value = '';
+                    document.getElementById('masterAdminDashboard').style.display = 'block';
+                    loadOrdersDashboardTable();
+                } else {
+                    errBox.innerText = "Access Denied: Master Authentication Signature match failed.";
+                }
+            };
+
+            document.getElementById('newProductPipelineForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const lockBtn = document.getElementById('publishProductBtn');
+                lockBtn.innerText = "Writing Data Packets...";
+                lockBtn.disabled = true;
+
+                const pipelineData = {
+                    action: "addProduct",
+                    id: "PROD-" + Math.floor(Math.random() * 90000 + 10000),
+                    title: document.getElementById('newProdTitle').value.trim(),
+                    category: document.getElementById('newProdCategory').value,
+                    price: Number(document.getElementById('newProdPrice').value),
+                    image: document.getElementById('newProdImage').value.trim(),
+                    description: document.getElementById('newProdDesc').value.trim()
+                };
+
+                try {
+                    await fetch(CLOUD_WEB_APP_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(pipelineData)
+                    });
+                    triggerStatusToastAlert("🚀 Catalog array expansion complete! Product Added Live.");
+                    document.getElementById('newProductPipelineForm').reset();
+                    loadLiveCatalogStream();
+                } catch(error) {
+                    triggerStatusToastAlert("❌ Server write cycle interrupted.");
+                } finally {
+                    lockBtn.innerText = "Upload Active Feed To Store";
+                    lockBtn.disabled = false;
+                }
+            });
+
+            document.getElementById('syncOrdersBtn').onclick = () => loadOrdersDashboardTable();
+        }
+
+        async function loadOrdersDashboardTable() {
+            try {
+                document.getElementById('ordersDataSpinner').style.display = 'block';
+                document.getElementById('ordersTableStream').innerHTML = '';
+                
+                // Fetch current master table rows
+                const syncCall = await fetch(CLOUD_WEB_APP_URL);
+                const completeMockMapping = await syncCall.json();
+                
+                document.getElementById('ordersTableStream').innerHTML = `
+                    <tr>
+                        <td colspan="5" style="text-align:center; color:#64748b; padding:25px 10px;">
+                            🔄 Operations Shell Synchronized. New inbound purchase requests appear instantly inside your <strong>Orders</strong> worksheet tab.
+                        </td>
+                    </tr>`;
+            } catch(err) {
+                document.getElementById('ordersTableStream').innerHTML = <tr><td colspan="5" style="color:#ef4444; text-align:center;">Failed to pull operational orders logs array maps.</td></tr>;
+            } finally {
+                document.getElementById('ordersDataSpinner').style.display = 'none';
+            }
+        }
+
+        function triggerStatusToastAlert(text) {
+            const flashNode = document.getElementById('statusToastBox');
+            flashNode.innerText = text;
+            flashNode.classList.add('visible');
+            setTimeout(() => flashNode.classList.remove('visible'), 4000);
         }
     </script>
 </body>
-</html
+</html>
