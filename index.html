@@ -2,33 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Premium Store - Operation 300</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OP300 Premium Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50">
 
-    <nav class="bg-white p-4 shadow-md sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-black text-blue-700">OP300 STORE</h1>
-            <div class="space-x-4">
-                <button onclick="filterProducts('All')" class="font-bold text-gray-700">All</button>
-                <button onclick="filterProducts('Electronics')" class="font-bold text-gray-700">Electronics</button>
-            </div>
+    <nav class="bg-white p-5 shadow-sm sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto">
+            <h1 class="text-3xl font-extrabold text-blue-600 tracking-tighter">OP300 STORE</h1>
         </div>
     </nav>
 
-    <main class="max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-3 gap-8" id="product-grid">
-        </main>
+    <div class="max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-3 gap-6" id="product-grid">
+        </div>
 
-    <div id="checkoutModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-        <div class="bg-white p-8 rounded-2xl w-full max-w-md shadow-2xl">
-            <h2 class="text-2xl font-bold mb-4">Checkout (COD)</h2>
-            <input type="text" id="name" placeholder="Full Name" class="w-full border p-3 mb-3 rounded-lg">
-            <input type="text" id="phone" placeholder="Phone Number" class="w-full border p-3 mb-3 rounded-lg">
-            <input type="text" id="address" placeholder="Shipping Address" class="w-full border p-3 mb-3 rounded-lg">
-            <input type="text" id="pin" placeholder="Pin Code" class="w-full border p-3 mb-6 rounded-lg">
-            <button onclick="placeOrder()" class="w-full bg-blue-700 text-white py-3 rounded-lg font-bold">Confirm Order</button>
-            <button onclick="document.getElementById('checkoutModal').classList.add('hidden')" class="w-full mt-2 text-gray-500">Cancel</button>
+    <div id="checkoutModal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
+        <div class="bg-white p-6 rounded-2xl w-full max-w-sm shadow-2xl">
+            <h2 class="text-2xl font-bold mb-4">Delivery Details</h2>
+            <input type="text" id="name" placeholder="Full Name" class="w-full border p-3 mb-3 rounded-xl bg-gray-50">
+            <input type="text" id="phone" placeholder="Phone Number" class="w-full border p-3 mb-3 rounded-xl bg-gray-50">
+            <input type="text" id="address" placeholder="Shipping Address" class="w-full border p-3 mb-3 rounded-xl bg-gray-50">
+            <input type="text" id="pin" placeholder="Pin Code" class="w-full border p-3 mb-6 rounded-xl bg-gray-50">
+            <button onclick="placeOrder()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold text-lg">Place COD Order</button>
+            <button onclick="closeModal()" class="w-full mt-3 text-gray-500 font-bold">Cancel</button>
         </div>
     </div>
 
@@ -38,29 +35,44 @@
         const firebaseConfig = {
             apiKey: "AIzaSyAGMiL4zA9yM48RgxKaa30Ge8wPG_FDomk",
             databaseURL: "https://trendspot-store-default-rtdb.firebaseio.com",
-            projectId: "trendspot-store",
-            storageBucket: "trendspot-store.firebasestorage.app",
-            messagingSenderId: "195199081717",
-            appId: "1:195199081717:web:3b14a6a93f0cf64d6ab9bc"
+            projectId: "trendspot-store"
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
         const products = [
-            { title: "Wireless Headphones", price: "₹1,999", category: "Electronics" },
-            { title: "Smart Watch", price: "₹2,499", category: "Electronics" },
-            { title: "Bluetooth Speaker", price: "₹999", category: "Electronics" }
+            // Electronics
+            { title: "Wireless Headphones", price: "₹1,999", cat: "Electronics" },
+            { title: "Smart Watch", price: "₹2,499", cat: "Electronics" },
+            { title: "Bluetooth Speaker", price: "₹999", cat: "Electronics" },
+            // Footwear
+            { title: "Running Shoes", price: "₹1,299", cat: "Footwear" },
+            { title: "Casual Sneakers", price: "₹999", cat: "Footwear" },
+            { title: "Formal Leather Shoes", price: "₹1,899", cat: "Footwear" },
+            // Accessories
+            { title: "Leather Wallet", price: "₹499", cat: "Accessories" },
+            { title: "Premium Sunglasses", price: "₹599", cat: "Accessories" },
+            { title: "Classic Wristwatch", price: "₹1,200", cat: "Accessories" },
+            // Home & Kitchen
+            { title: "Water Bottle", price: "₹299", cat: "Home & Kitchen" },
+            { title: "Desk Lamp", price: "₹799", cat: "Home & Kitchen" },
+            { title: "Kitchen Knife Set", price: "₹1,099", cat: "Home & Kitchen" },
+            // Fitness
+            { title: "Gym Shaker", price: "₹399", cat: "Fitness" },
+            { title: "Yoga Mat", price: "₹699", cat: "Fitness" },
+            { title: "Resistance Bands", price: "₹450", cat: "Fitness" }
         ];
 
-        function render(list) {
+        function loadProducts() {
             const grid = document.getElementById('product-grid');
-            grid.innerHTML = list.map(p => `
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <h3 class="text-xl font-bold mb-2">${p.title}</h3>
-                    <p class="text-blue-600 font-bold mb-6">${p.price}</p>
-                    <div class="flex gap-2">
-                        <button onclick="addToCart('${p.title}', '${p.price}')" class="w-1/2 border-2 border-blue-700 text-blue-700 py-2 rounded-lg font-bold">Add to Cart</button>
-                        <button onclick="openCheckout('${p.title}', '${p.price}')" class="w-1/2 bg-blue-700 text-white py-2 rounded-lg font-bold">Buy Now</button>
+            grid.innerHTML = products.map(p => `
+                <div class="bg-white p-6 rounded-3xl shadow-md border border-gray-100 hover:shadow-xl transition">
+                    <span class="text-xs font-bold text-blue-500 uppercase tracking-widest">${p.cat}</span>
+                    <h3 class="text-xl font-bold text-gray-800 mt-1 mb-2">${p.title}</h3>
+                    <p class="text-2xl font-black text-blue-600 mb-6">${p.price}</p>
+                    <div class="flex flex-col gap-3">
+                        <button onclick="addToCart('${p.title}', '${p.price}')" class="w-full border-2 border-blue-600 text-blue-600 py-3 rounded-xl font-bold">Add to Cart</button>
+                        <button onclick="openCheckout('${p.title}', '${p.price}')" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold">Buy Now</button>
                     </div>
                 </div>
             `).join('');
@@ -68,34 +80,36 @@
 
         function addToCart(title, price) {
             db.ref('cart/').push({ item: title, price: price });
-            alert(title + " added to your cart!");
+            alert(title + " has been added to your cart!");
         }
 
         function openCheckout(title, price) {
-            window.selectedItem = { title, price };
+            window.activeProduct = { title, price };
             document.getElementById('checkoutModal').classList.remove('hidden');
         }
 
+        function closeModal() { document.getElementById('checkoutModal').classList.add('hidden'); }
+
         function placeOrder() {
-            const order = {
+            const data = {
                 name: document.getElementById('name').value,
                 phone: document.getElementById('phone').value,
                 address: document.getElementById('address').value,
                 pin: document.getElementById('pin').value,
-                product: window.selectedItem.title,
-                price: window.selectedItem.price,
+                product: window.activeProduct.title,
+                price: window.activeProduct.price,
                 status: "Pending"
             };
-            db.ref('orders/').push(order);
-            alert("Order Placed Successfully!");
-            document.getElementById('checkoutModal').classList.add('hidden');
+            if(data.name && data.phone) {
+                db.ref('orders/').push(data);
+                alert("Order placed successfully! Thank you.");
+                closeModal();
+            } else {
+                alert("Please fill in all details.");
+            }
         }
 
-        function filterProducts(cat) {
-            render(cat === 'All' ? products : products.filter(p => p.category === cat));
-        }
-
-        render(products);
+        loadProducts();
     </script>
 </body>
 </html>
