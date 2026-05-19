@@ -1,403 +1,193 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trending Store | Premium Dropshipping Hub</title>
-    <!-- Premium Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>TRENDSPOT | Premium Marketplace</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
 </head>
-<body>
+<body class="bg-slate-50 text-slate-900 antialiased">
 
-    <!-- Announcement Notification Bar -->
-    <div class="promo-bar">
-        <p>⚡ FAST SHIPPING WORLDWIDE • TIME LIMITED OFFERS ON ALL TRENDING CATEGORIES ⚡</p>
-    </div>
-
-    <!-- Navigation Header Bar -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="#" class="nav-logo"><i class="fa-solid fa-bolt"></i> TRENDS<span>POT</span></a>
-            <div class="nav-actions">
-                <button class="admin-access-btn" id="openAdminBtn"><i class="fa-solid fa-user-lock"></i> Staff Login</button>
+    <header class="h-20 bg-white border-b border-slate-200 sticky top-0 z-50 px-6 lg:px-12 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-600/30">
+                <i class="fa-solid fa-bolt text-white text-lg"></i>
             </div>
+            <span class="font-extrabold text-2xl tracking-tight bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">TRENDSPOT</span>
         </div>
-    </nav>
 
-    <!-- Visual Hero Spotlight Area -->
-    <header class="hero-showcase">
-        <div class="hero-overlay-content">
-            <span class="category-badge">Curated Inventory 2026</span>
-            <h1>Unleash The Power Of <br>Trending Global Products</h1>
-            <p>Direct supply networks bringing hot, viral, and high-demand products straight to your doorstep with zero middleman markup.</p>
-            <a href="#marketplace-grid" class="explore-cta-btn">Shop The Collection <i class="fa-solid fa-arrow-down"></i></a>
+        <div class="flex items-center space-x-6 relative">
+            <button class="relative p-2 text-slate-600 hover:text-indigo-600 transition">
+                <i class="fa-solid fa-cart-shopping text-xl"></i>
+                <span id="cart-badge" class="absolute -top-1 -right-1 w-5 h-5 bg-indigo-600 text-white rounded-full text-[10px] font-bold flex items-center justify-center">0</span>
+            </button>
+
+            <div class="relative">
+                <button onclick="toggleActionMenu()" class="p-2 text-slate-600 hover:bg-slate-100 rounded-xl transition focus:outline-none">
+                    <i class="fa-solid fa-ellipsis-vertical text-xl"></i>
+                </button>
+                <div id="action-dropdown" class="hidden absolute right-0 mt-3 w-52 bg-white border border-slate-200 rounded-2xl shadow-xl z-50 overflow-hidden">
+                    <div class="px-4 py-2.5 bg-slate-50 border-b border-slate-100 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Navigation System</div>
+                    <a href="index.html" class="flex items-center px-4 py-3 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition font-medium">
+                        <i class="fa-solid fa-house w-6 opacity-60"></i> Home Page
+                    </a>
+                    <a href="admin.html" class="flex items-center px-4 py-3 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition font-medium border-t border-slate-100">
+                        <i class="fa-solid fa-user-shield w-6 opacity-60"></i> Staff Portal
+                    </a>
+                </div>
+            </div>
         </div>
     </header>
 
-    <!-- Main Marketplace Dynamic Display -->
-    <main class="marketplace-wrapper" id="marketplace-grid">
-        
-        <!-- Interactive Category Sorting Tabs -->
-        <div class="category-filter-container">
-            <h3 class="filter-headline">Select Category Matrix</h3>
-            <div class="filter-tabs-group" id="categoryFilterTabs">
-                <button class="tab-item active" data-filter="all">🔥 All Products</button>
-                <button class="tab-item" data-filter="Electronics">🔌 Electronics</button>
-                <button class="tab-item" data-filter="Fashion">👕 Fashion</button>
-                <button class="tab-item" data-filter="Home Decor">🏠 Home Decor</button>
-                <button class="tab-item" data-filter="Gadgets">📱 Smart Gadgets</button>
-            </div>
-        </div>
+    <main class="max-w-7xl mx-auto px-6 lg:px-8 py-12 space-y-12">
+        <section class="text-center max-w-3xl mx-auto space-y-4 pt-4">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-100">
+                <span class="w-1.5 h-1.5 bg-indigo-500 rounded-full mr-2 animate-pulse"></span> Verified Wholesale Inventory
+            </span>
+            <h1 class="text-4xl sm:text-5xl font-black text-slate-950 tracking-tight">Trending Global Products</h1>
+            <p class="text-sm sm:text-base text-slate-500 font-medium">Direct supply networks bringing high-demand, viral products straight to your catalog database with native automation sync channels.</p>
+        </section>
 
-        <!-- Dynamic Product Display Grid Grid Layout -->
-        <div class="catalog-grid" id="catalogGrid">
-            <!-- Fetching Network Spinner UI -->
-            <div class="network-spinner" id="catalogSpinner">
-                <i class="fa-solid fa-spinner fa-spin"></i>
-                <p>Synchronizing global product feed streams directly from cloud matrix...</p>
+        <section class="space-y-8">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-slate-200 pb-5 space-y-4 sm:space-y-0">
+                <h2 class="text-lg font-extrabold text-slate-950">Select Category Matrix</h2>
+                <div class="flex flex-wrap gap-2" id="filter-buttons-container">
+                    <button onclick="filterCatalog('all')" id="btn-all" class="category-btn px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm transition">All Products</button>
+                    <button onclick="filterCatalog('Smart Gadgets')" id="btn-smart" class="category-btn px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-600 hover:bg-slate-100 transition border border-slate-200">Smart Gadgets</button>
+                    <button onclick="filterCatalog('Fashion')" id="btn-fashion" class="category-btn px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-600 hover:bg-slate-100 transition border border-slate-200">Fashion</button>
+                    <button onclick="filterCatalog('Home Decor')" id="btn-decor" class="category-btn px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-600 hover:bg-slate-100 transition border border-slate-200">Home Decor</button>
+                    <button onclick="filterCatalog('Electronics')" id="btn-elec" class="category-btn px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-600 hover:bg-slate-100 transition border border-slate-200">Electronics</button>
+                </div>
             </div>
-        </div>
+
+            <div id="storefront-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                </div>
+        </section>
     </main>
 
-    <!-- Customer Checkout Transaction Slip Modal Container -->
-    <div class="checkout-modal-overlay" id="checkoutModal">
-        <div class="modal-body-wrapper">
-            <div class="modal-title-header">
-                <h3><i class="fa-solid fa-truck-fast"></i> Delivery Invoice Setup</h3>
-                <span class="dismiss-modal-btn" id="dismissCheckoutBtn">&times;</span>
-            </div>
-            <form id="customerPurchaseForm" class="modal-interactive-form">
-                <input type="hidden" id="targetProductTitle">
-                <input type="hidden" id="targetProductPrice">
-                
-                <div class="purchase-preview-card">
-                    <p>Selected Item: <strong id="previewTitleDisplay">-</strong></p>
-                    <p>Price Due: <strong id="previewPriceDisplay">-</strong></p>
-                </div>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
-                <div class="input-form-row">
-                    <label for="shippingName">Customer Name</label>
-                    <input type="text" id="shippingName" placeholder="Enter complete first & last name" required>
-                </div>
-                <div class="input-form-row">
-                    <label for="shippingPhone">Mobile Contact Number</label>
-                    <input type="tel" id="shippingPhone" placeholder="10-Digit mobile number required" required>
-                </div>
-                <div class="input-form-row">
-                    <label for="shippingAddress">Full Shipping Destination Address</label>
-                    <textarea id="shippingAddress" rows="3" placeholder="House/Flat number, Street name, Landmark, City & Pincode" required></textarea>
-                </div>
-                <div class="input-form-row">
-                    <label for="shippingQuantity">Order Item Quantity</label>
-                    <input type="number" id="shippingQuantity" value="1" min="1" required>
-                </div>
-
-                <button type="submit" class="execute-order-btn" id="confirmOrderBtn">Process Order (Cash On Delivery Available)</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- SECRET SECURITY AUTH GATEWAY MODAL -->
-    <div class="checkout-modal-overlay" id="securityGatewayModal">
-        <div class="modal-body-wrapper strict-auth-width">
-            <div class="modal-title-header">
-                <h3><i class="fa-solid fa-shield-halved"></i> Verification Gate</h3>
-                <span class="dismiss-modal-btn" id="dismissAuthBtn">&times;</span>
-            </div>
-            <div class="modal-interactive-form">
-                <div class="input-form-row">
-                    <label for="securityKeyInput">Enter Master Security Password</label>
-                    <input type="password" id="securityKeyInput" placeholder="••••••••" required>
-                </div>
-                <button class="execute-order-btn" id="authenticateKeyBtn">Unlock Command Dashboard</button>
-                <p id="securityAlertBox" class="alert-error-notification"></p>
-            </div>
-        </div>
-    </div>
-
-    <!-- MASTER ADMIN MANAGEMENT ENVELOPE (Totally hidden by default until verification passes) -->
-    <div class="admin-shell-dashboard" id="masterAdminDashboard">
-        <div class="dashboard-viewport-box">
-            <div class="dashboard-top-nav">
-                <h2><i class="fa-solid fa-gears"></i> Operations Control Terminal</h2>
-                <div class="terminal-actions">
-                    <button class="sync-data-btn" id="syncOrdersBtn"><i class="fa-solid fa-rotate"></i> Fetch Cloud Orders</button>
-                    <button class="exit-terminal-btn" id="exitDashboardBtn"><i class="fa-solid fa-power-off"></i> Exit Dashboard</button>
-                </div>
-            </div>
-
-            <div class="dashboard-split-layout">
-                <!-- Left Block: Add Product -->
-                <div class="terminal-card">
-                    <h3><i class="fa-solid fa-circle-plus"></i> Launch Product Entry Pipeline</h3>
-                    <form id="newProductPipelineForm" class="modal-interactive-form">
-                        <div class="input-form-row">
-                            <label for="newProdTitle">Product Label Designation</label>
-                            <input type="text" id="newProdTitle" placeholder="e.g., Sonic Pro Elite ANC Earbuds" required>
-                        </div>
-                        <div class="input-form-row">
-                            <label for="newProdCategory">Assigned Catalog Category</label>
-                            <select id="newProdCategory" required>
-                                <option value="Electronics">Electronics</option>
-                                <option value="Fashion">Fashion</option>
-                                <option value="Home Decor">Home Decor</option>
-                                <option value="Gadgets">Smart Gadgets</option>
-                            </select>
-                        </div>
-                        <div class="input-form-row">
-                            <label for="newProdPrice">Base Sale Valuation Price</label>
-                            <input type="number" id="newProdPrice" placeholder="e.g., 2499" required>
-                        </div>
-                        <div class="input-form-row">
-                            <label for="newProdImage">Direct Product Image URL Link</label>
-                            <input type="url" id="newProdImage" placeholder="https://images.unsplash.com/... or cloud image links" required>
-                        </div>
-                        <div class="input-form-row">
-                            <label for="newProdDesc">Marketing Specifications & Description</label>
-                            <textarea id="newProdDesc" rows="3" placeholder="Input structural details, shipping notes and specifications..." required></textarea>
-                        </div>
-                        <button type="submit" class="execute-order-btn pipeline-success-bg" id="publishProductBtn">Upload Active Feed To Store</button>
-                    </form>
-                </div>
-
-                <!-- Right Block: Orders Table -->
-                <div class="terminal-card orders-stretch-card">
-                    <h3><i class="fa-solid fa-receipt"></i> Active Consumer Orders Inbound</h3>
-                    <div class="table-scroll-container">
-                        <table class="data-stream-table">
-                            <thead>
-                                <tr>
-                                    <th>ID String</th>
-                                    <th>Client Particulars</th>
-                                    <th>Target Item Matrix</th>
-                                    <th>Logistics Route Map</th>
-                                    <th>Operational State</th>
-                                </tr>
-                            </thead>
-                            <tbody id="ordersTableStream">
-                                <!-- Populated dynamically from Google Sheet Data -->
-                            </tbody>
-                        </table>
-                        <div class="network-spinner" id="ordersDataSpinner" style="display:none;">
-                            <i class="fa-solid fa-circle-notch fa-spin"></i>
-                            <p>Loading database sync files...</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Alert Toast Feedback Widget -->
-    <div id="statusToastBox" class="floating-toast-alert"></div>
-
-    <!-- INLINE FRONTEND LOGIC COMPONENT (Fully Wired) -->
     <script>
-        const CLOUD_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwU-CZds6E_X49Xw-hj6xFr_HEfD4JeMOSYeoX7BzMr0o3iig5vEnqbyqsMrlZWDTHR/exec"; 
-        const MASTER_GATEWAY_PASSWORD = "Admin@Anand2026"; 
+        // Paste your exact Firebase config parameters inside this block
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
 
-        let globalCatalogCache = [];
+        // Comprehensive Master Database Array containing all 8 target items
+        const masterProductsDatabase = [
+            { id: "TS-101", title: "Wireless Earbuds Pro", category: "Smart Gadgets", price: "₹1,299", image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=600", description: "Active noise cancellation with 24 hours battery." },
+            { id: "TS-102", title: "Smart Fitness Watch X", category: "Smart Gadgets", price: "₹2,499", image: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=600", description: "AMOLED display tracking heart rate and sleep." },
+            { id: "TS-201", title: "Classic Polarized Sunglasses", category: "Fashion", price: "₹899", image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600", description: "High-definition UV400 protection eyewear." },
+            { id: "TS-202", title: "Minimalist Leather Wallet", category: "Fashion", price: "₹699", image: "https://images.unsplash.com/photo-1627123424574-724758594e93?w=600", description: "Slim RFID blocking genuine leather card holder." },
+            { id: "TS-301", title: "Ceramic Plant Pot Geometric", category: "Home Decor", price: "₹549", image: "https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=600", description: "Nordic style matte white indoor plant container." },
+            { id: "TS-302", title: "Aromatic Oil Diffuser", category: "Home Decor", price: "₹1,199", image: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=600", description: "Ultrasonic cool mist humidifier with 7 LED lamps." },
+            { id: "TS-401", title: "Ergonomic Gaming Mouse", category: "Electronics", price: "₹1,499", image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=600", description: "High precision RGB backlit optical wired mouse." },
+            { id: "TS-402", title: "Mechanical Keyboard Lite", category: "Electronics", price: "₹2,199", image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600", description: "Tactile blue switches with customizable backlight." }
+        ];
 
-        document.addEventListener('DOMContentLoaded', () => {
-            loadLiveCatalogStream();
-            bindUserInterfaceActions();
-        });
+        let currentCartCount = 0;
 
-        async function loadLiveCatalogStream() {
-            try {
-                document.getElementById('catalogSpinner').style.display = 'block';
-                const connection = await fetch(CLOUD_WEB_APP_URL);
-                globalCatalogCache = await connection.json();
-                renderMarketplaceCards(globalCatalogCache);
-            } catch (err) {
-                console.error(err);
-                document.getElementById('catalogGrid').innerHTML = <p class='alert-error-notification' style='grid-column:1/-1; text-align:center;'>Database sync failure. Verify sheet cells configuration array parameters.</p>;
-            } finally {
-                document.getElementById('catalogSpinner').style.display = 'none';
-            }
+        function toggleActionMenu() {
+            document.getElementById('action-dropdown').classList.toggle('hidden');
         }
 
-        function renderMarketplaceCards(itemsList) {
-            const spinnerObj = document.getElementById('catalogSpinner');
-            const gridContainer = document.getElementById('catalogGrid');
-            gridContainer.innerHTML = '';
-            if(spinnerObj) gridContainer.appendChild(spinnerObj);
-
-            if(itemsList.length === 0) {
-                gridContainer.innerHTML += <p style='grid-column:1/-1; text-align:center; color: #64748b; padding: 40px 0;'>No active inventory matched your structural selections.</p>;
-                return;
-            }
-
-            itemsList.forEach(p => {
-                const node = document.createElement('div');
-                node.className = 'inventory-card';
-                node.innerHTML = `
-                    <div class="frame-media-holder">
-                        <span class="tag-meta-label">${p.category}</span>
-                        <img src="${p.image || 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?q=80&w=400'}" alt="${p.title}">
-                    </div>
-                    <div class="card-details-payload">
-                        <h4>${p.title}</h4>
-                        <p>${p.description ? p.description.substring(0, 85) + '...' : 'Premium hot drop high utility trending commodity bundle.'}</p>
-                        <div class="card-price-callout">
-                            <span class="numeric-price">₹${p.price}</span>
-                            <button class="buy-action-trigger" onclick="initiateCheckoutProcess('${p.title.replace(/'/g, "\\'")}', '${p.price}')">Order Now</button>
+        function renderStoreGrid(targetProducts) {
+            const grid = document.getElementById('storefront-grid');
+            grid.innerHTML = "";
+            
+            targetProducts.forEach(prod => {
+                const card = document.createElement('div');
+                card.className = "bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-xs hover:shadow-xl hover:-translate-y-1 transition duration-300 transform flex flex-col justify-between";
+                card.innerHTML = `
+                    <div>
+                        <div class="relative overflow-hidden group">
+                            <img src="${prod.image}" class="h-52 w-full object-cover bg-slate-50 transition duration-500 group-hover:scale-105" alt="${prod.title}">
+                            <span class="absolute top-3 left-3 px-2 py-0.5 text-[9px] font-bold bg-slate-900/80 text-white rounded-md uppercase tracking-wider backdrop-blur-xs">${prod.category}</span>
+                        </div>
+                        <div class="p-5 space-y-1.5">
+                            <h3 class="font-bold text-slate-900 text-sm leading-tight line-clamp-1">${prod.title}</h3>
+                            <p class="text-xs text-slate-500 leading-normal line-clamp-2">${prod.description}</p>
                         </div>
                     </div>
+                    <div class="px-5 pb-5 pt-2 flex items-center justify-between border-t border-slate-50 mt-auto">
+                        <span class="text-indigo-600 font-extrabold text-base tracking-tight">${prod.price}</span>
+                        <button onclick="dispatchLiveOrder('${prod.id}', '${prod.title}', '${prod.price}')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition shadow-xs">
+                            Buy Now
+                        </button>
+                    </div>
                 `;
-                gridContainer.appendChild(node);
+                grid.appendChild(card);
             });
         }
 
-        document.getElementById('categoryFilterTabs').addEventListener('click', (e) => {
-            if(!e.target.classList.contains('tab-item')) return;
-            document.querySelectorAll('.tab-item').forEach(btn => btn.classList.remove('active'));
-            e.target.classList.add('active');
-
-            const queryFilter = e.target.getAttribute('data-filter');
-            if(queryFilter === 'all') {
-                renderMarketplaceCards(globalCatalogCache);
+        function filterCatalog(category) {
+            // Manage Tab Styles
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.className = "category-btn px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-600 hover:bg-slate-100 transition border border-slate-200";
+            });
+            
+            if(category === 'all') {
+                document.getElementById('btn-all').className = "category-btn px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm transition";
+                renderStoreGrid(masterProductsDatabase);
             } else {
-                renderMarketplaceCards(globalCatalogCache.filter(item => item.category === queryFilter));
+                if(category === 'Smart Gadgets') document.getElementById('btn-smart').className = "category-btn px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm transition";
+                if(category === 'Fashion') document.getElementById('btn-fashion').className = "category-btn px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm transition";
+                if(category === 'Home Decor') document.getElementById('btn-decor').className = "category-btn px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm transition";
+                if(category === 'Electronics') document.getElementById('btn-elec').className = "category-btn px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm transition";
+                
+                const filtered = masterProductsDatabase.filter(p => p.category === category);
+                renderStoreGrid(filtered);
             }
-        });
+        }
 
-        window.initiateCheckoutProcess = (title, price) => {
-            document.getElementById('targetProductTitle').value = title;
-            document.getElementById('targetProductPrice').value = price;
-            document.getElementById('previewTitleDisplay').innerText = title;
-            document.getElementById('previewPriceDisplay').innerText = ₹${price};
-            document.getElementById('checkoutModal').style.display = 'flex';
-        };
-
-        document.getElementById('customerPurchaseForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const processBtn = document.getElementById('confirmOrderBtn');
-            processBtn.innerText = "Transmitting Packet File Envelopes...";
-            processBtn.disabled = true;
-
-            const orderPayload = {
-                action: "addOrder",
-                orderId: "ORD-" + Date.now().toString().substring(6),
-                customerName: document.getElementById('shippingName').value.trim(),
-                phone: document.getElementById('shippingPhone').value.trim(),
-                address: document.getElementById('shippingAddress').value.trim(),
-                productTitle: document.getElementById('targetProductTitle').value,
-                quantity: parseInt(document.getElementById('shippingQuantity').value),
+        // Global Action Engine: Pushes immediate order records directly to Firebase Instance
+        function dispatchLiveOrder(prodId, prodTitle, prodPrice) {
+            const timestamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+            const generatedOrderId = "#ORD-" + Math.floor(100000 + Math.random() * 900000);
+            
+            const databasePayload = {
+                orderId: generatedOrderId,
+                time: timestamp,
+                customerName: "Global Web Customer",
+                itemsPurchased: prodTitle,
+                totalAmount: prodPrice,
                 status: "Pending"
             };
 
-            try {
-                await fetch(CLOUD_WEB_APP_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(orderPayload)
-                });
-                triggerStatusToastAlert("🎉 Order Placed Safely! Cash on Delivery confirmed.");
-                document.getElementById('customerPurchaseForm').reset();
-                document.getElementById('checkoutModal').style.display = 'none';
-            } catch(ex) {
-                triggerStatusToastAlert("❌ Transmission handshake failed network validation check.");
-            } finally {
-                processBtn.innerText = "Confirm Order (Cash On Delivery Available)";
-                processBtn.disabled = false;
+            database.ref('live_orders/').push(databasePayload)
+            .then(() => {
+                currentCartCount++;
+                document.getElementById('cart-badge').innerText = currentCartCount;
+                alert(Success! Order for ${prodTitle} successfully submitted. Verification logged under token: ${generatedOrderId});
+            })
+            .catch(err => {
+                console.error("Transmission blocked:", err);
+                alert("Database transmission fault. Verify Firebase authorization payload.");
+            });
+        }
+
+        window.onload = () => { renderStoreGrid(masterProductsDatabase); };
+        window.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('action-dropdown');
+            if (!dropdown.contains(e.target) && !e.target.closest('button[onclick="toggleActionMenu()"]')) {
+                dropdown.classList.add('hidden');
             }
         });
-
-        function bindUserInterfaceActions() {
-            document.getElementById('openAdminBtn').onclick = () => {
-                document.getElementById('securityGatewayModal').style.display = 'flex';
-                document.getElementById('securityKeyInput').focus();
-            };
-            document.getElementById('dismissCheckoutBtn').onclick = () => document.getElementById('checkoutModal').style.display = 'none';
-            document.getElementById('dismissAuthBtn').onclick = () => {
-                document.getElementById('securityGatewayModal').style.display = 'none';
-                document.getElementById('securityAlertBox').innerText = '';
-            };
-            document.getElementById('exitDashboardBtn').onclick = () => document.getElementById('masterAdminDashboard').style.display = 'none';
-
-            document.getElementById('authenticateKeyBtn').onclick = () => {
-                const key = document.getElementById('securityKeyInput').value;
-                const errBox = document.getElementById('securityAlertBox');
-                if(key === MASTER_GATEWAY_PASSWORD) {
-                    errBox.innerText = '';
-                    document.getElementById('securityGatewayModal').style.display = 'none';
-                    document.getElementById('securityKeyInput').value = '';
-                    document.getElementById('masterAdminDashboard').style.display = 'block';
-                    loadOrdersDashboardTable();
-                } else {
-                    errBox.innerText = "Access Denied: Master Authentication Signature match failed.";
-                }
-            };
-
-            document.getElementById('newProductPipelineForm').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const lockBtn = document.getElementById('publishProductBtn');
-                lockBtn.innerText = "Writing Data Packets...";
-                lockBtn.disabled = true;
-
-                const pipelineData = {
-                    action: "addProduct",
-                    id: "PROD-" + Math.floor(Math.random() * 90000 + 10000),
-                    title: document.getElementById('newProdTitle').value.trim(),
-                    category: document.getElementById('newProdCategory').value,
-                    price: Number(document.getElementById('newProdPrice').value),
-                    image: document.getElementById('newProdImage').value.trim(),
-                    description: document.getElementById('newProdDesc').value.trim()
-                };
-
-                try {
-                    await fetch(CLOUD_WEB_APP_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(pipelineData)
-                    });
-                    triggerStatusToastAlert("🚀 Catalog array expansion complete! Product Added Live.");
-                    document.getElementById('newProductPipelineForm').reset();
-                    loadLiveCatalogStream();
-                } catch(error) {
-                    triggerStatusToastAlert("❌ Server write cycle interrupted.");
-                } finally {
-                    lockBtn.innerText = "Upload Active Feed To Store";
-                    lockBtn.disabled = false;
-                }
-            });
-
-            document.getElementById('syncOrdersBtn').onclick = () => loadOrdersDashboardTable();
-        }
-
-        async function loadOrdersDashboardTable() {
-            try {
-                document.getElementById('ordersDataSpinner').style.display = 'block';
-                document.getElementById('ordersTableStream').innerHTML = '';
-                
-                // Fetch current master table rows
-                const syncCall = await fetch(CLOUD_WEB_APP_URL);
-                const completeMockMapping = await syncCall.json();
-                
-                document.getElementById('ordersTableStream').innerHTML = `
-                    <tr>
-                        <td colspan="5" style="text-align:center; color:#64748b; padding:25px 10px;">
-                            🔄 Operations Shell Synchronized. New inbound purchase requests appear instantly inside your <strong>Orders</strong> worksheet tab.
-                        </td>
-                    </tr>`;
-            } catch(err) {
-                document.getElementById('ordersTableStream').innerHTML = <tr><td colspan="5" style="color:#ef4444; text-align:center;">Failed to pull operational orders logs array maps.</td></tr>;
-            } finally {
-                document.getElementById('ordersDataSpinner').style.display = 'none';
-            }
-        }
-
-        function triggerStatusToastAlert(text) {
-            const flashNode = document.getElementById('statusToastBox');
-            flashNode.innerText = text;
-            flashNode.classList.add('visible');
-            setTimeout(() => flashNode.classList.remove('visible'), 4000);
-        }
     </script>
 </body>
 </html>
