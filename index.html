@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,103 +10,70 @@
 <body class="bg-gray-50">
 
     <nav class="bg-white p-5 shadow-sm sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
             <h1 class="text-3xl font-extrabold text-blue-600 tracking-tighter">TREND SPOT</h1>
         </div>
     </nav>
 
-    <div class="max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-3 gap-6" id="product-grid">
-        </div>
+    <main class="max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-3 gap-6" id="product-grid"></main>
 
-    <div id="checkoutModal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
-        <div class="bg-white p-6 rounded-2xl w-full max-w-sm shadow-2xl">
-            <h2 class="text-2xl font-bold mb-4">Delivery Details</h2>
-            <input type="text" id="name" placeholder="Full Name" class="w-full border p-3 mb-3 rounded-xl bg-gray-50">
-            <input type="text" id="phone" placeholder="Phone Number" class="w-full border p-3 mb-3 rounded-xl bg-gray-50">
-            <input type="text" id="address" placeholder="Shipping Address" class="w-full border p-3 mb-3 rounded-xl bg-gray-50">
-            <input type="text" id="pin" placeholder="Pin Code" class="w-full border p-3 mb-6 rounded-xl bg-gray-50">
-            <button onclick="placeOrder()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold text-lg">Place COD Order</button>
-            <button onclick="closeModal()" class="w-full mt-3 text-gray-500 font-bold">Cancel</button>
+    <div id="detailModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50 overflow-y-auto">
+        <div class="bg-white p-6 rounded-3xl w-full max-w-lg shadow-2xl">
+            <img id="modalImg" class="w-full h-64 object-cover rounded-2xl mb-4">
+            <h2 id="modalTitle" class="text-3xl font-bold mb-2"></h2>
+            <p id="modalPrice" class="text-2xl font-black text-blue-600 mb-4"></p>
+            <p id="modalDesc" class="text-gray-600 mb-6"></p>
+            
+            <div class="grid grid-cols-4 gap-2 mb-6" id="gallery">
+                </div>
+
+            <div class="flex gap-4">
+                <button onclick="closeModal()" class="w-1/2 bg-gray-200 py-3 rounded-xl font-bold">Close</button>
+                <button onclick="openCheckout()" class="w-1/2 bg-blue-600 text-white py-3 rounded-xl font-bold">Buy Now</button>
+            </div>
         </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyAGMiL4zA9yM48RgxKaa30Ge8wPG_FDomk",
-            authDomain: "trendspot-store.firebaseapp.com",
-            databaseURL: "https://trendspot-store-default-rtdb.firebaseio.com",
-            projectId: "trendspot-store"
-        };
+        const firebaseConfig = { apiKey: "AIzaSyAGMiL4zA9yM48RgxKaa30Ge8wPG_FDomk", databaseURL: "https://trendspot-store-default-rtdb.firebaseio.com", projectId: "trendspot-store" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
         const products = [
-            { title: "Wireless Headphones", price: "₹1,999", cat: "Electronics", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500" },
-            { title: "Smart Watch", price: "₹2,499", cat: "Electronics", img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500" },
-            { title: "Bluetooth Speaker", price: "₹999", cat: "Electronics", img: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500" },
-            { title: "Running Shoes", price: "₹1,299", cat: "Footwear", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500" },
-            { title: "Casual Sneakers", price: "₹999", cat: "Footwear", img: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=500" },
-            { title: "Formal Shoes", price: "₹1,899", cat: "Footwear", img: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500" },
-            { title: "Leather Wallet", price: "₹499", cat: "Accessories", img: "https://images.unsplash.com/photo-1627123424574-724758594693?w=500" },
-            { title: "Sunglasses", price: "₹599", cat: "Accessories", img: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=500" },
-            { title: "Wristwatch", price: "₹1,200", cat: "Accessories", img: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=500" },
-            { title: "Water Bottle", price: "₹299", cat: "Home & Kitchen", img: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=500" },
-            { title: "Desk Lamp", price: "₹799", cat: "Home & Kitchen", img: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=500" },
-            { title: "Kitchen Set", price: "₹1,099", cat: "Home & Kitchen", img: "https://images.unsplash.com/photo-1556911220-e15b29be8c8b?w=500" },
-            { title: "Gym Shaker", price: "₹399", cat: "Fitness", img: "https://images.unsplash.com/photo-1581006852262-e4307c62d04f?w=500" },
-            { title: "Yoga Mat", price: "₹699", cat: "Fitness", img: "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=500" },
-            { title: "Resistance Bands", price: "₹450", cat: "Fitness", img: "https://images.unsplash.com/photo-1598289450703-911181510202?w=500" }
+            { id: 1, title: "Wireless Headphones", price: "₹1,999", desc: "Premium sound quality with noise cancellation.", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500", gallery: ["https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=100", "https://images.unsplash.com/photo-1524678606370-a47ad25cb82a?w=100"] },
+            { id: 2, title: "Smart Watch", price: "₹2,499", desc: "Track your health with advanced sensors.", img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500", gallery: ["https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=100", "https://images.unsplash.com/photo-1434493789847-2f30dc6b336c?w=100"] }
         ];
 
-        function loadProducts() {
+        function renderProducts() {
             const grid = document.getElementById('product-grid');
             grid.innerHTML = products.map(p => `
-                <div class="bg-white p-4 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl transition">
+                <div onclick="openDetail(${p.id})" class="bg-white p-4 rounded-3xl shadow-sm border cursor-pointer hover:shadow-xl transition">
                     <img src="${p.img}" class="w-full h-48 object-cover rounded-2xl mb-4">
-                    <span class="text-xs font-bold text-blue-500 uppercase tracking-widest">${p.cat}</span>
-                    <h3 class="text-xl font-bold text-gray-800 mt-1 mb-2">${p.title}</h3>
-                    <p class="text-2xl font-black text-blue-600 mb-6">${p.price}</p>
-                    <div class="flex flex-col gap-3">
-                        <button onclick="addToCart('${p.title}', '${p.price}')" class="w-full border-2 border-blue-600 text-blue-600 py-3 rounded-xl font-bold">Add to Cart</button>
-                        <button onclick="openCheckout('${p.title}', '${p.price}')" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold">Buy Now</button>
-                    </div>
+                    <h3 class="text-xl font-bold">${p.title}</h3>
+                    <p class="text-blue-600 font-bold">${p.price}</p>
                 </div>
             `).join('');
         }
 
-        function addToCart(title, price) {
-            db.ref('cart/').push({ item: title, price: price });
-            alert(title + " added to your cart!");
+        function openDetail(id) {
+            const p = products.find(prod => prod.id === id);
+            window.activeProduct = p;
+            document.getElementById('modalImg').src = p.img;
+            document.getElementById('modalTitle').innerText = p.title;
+            document.getElementById('modalPrice').innerText = p.price;
+            document.getElementById('modalDesc').innerText = p.desc;
+            document.getElementById('detailModal').classList.remove('hidden');
         }
 
-        function openCheckout(title, price) {
-            window.activeProduct = { title, price };
-            document.getElementById('checkoutModal').classList.remove('hidden');
+        function closeModal() { document.getElementById('detailModal').classList.add('hidden'); }
+        
+        function openCheckout() {
+            alert("Proceeding to checkout for " + window.activeProduct.title);
         }
 
-        function closeModal() { document.getElementById('checkoutModal').classList.add('hidden'); }
-
-        function placeOrder() {
-            const data = {
-                name: document.getElementById('name').value,
-                phone: document.getElementById('phone').value,
-                address: document.getElementById('address').value,
-                pin: document.getElementById('pin').value,
-                product: window.activeProduct.title,
-                price: window.activeProduct.price,
-                status: "Pending"
-            };
-            if(data.name && data.phone) {
-                db.ref('orders/').push(data);
-                alert("Order placed successfully!");
-                closeModal();
-            } else {
-                alert("Please fill in all details.");
-            }
-        }
-        loadProducts();
+        renderProducts();
     </script>
 </body>
 </html>
