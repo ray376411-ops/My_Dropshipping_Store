@@ -3,115 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Owner Dashboard - Realtime Logistics Hub</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Operations Command Center | Admin Dashboard</title>
+    <!-- Tailwind CSS Engine -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Integration -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        .dashboard-container { padding: 40px 5%; max-width: 1300px; margin: 0 auto; }
-        .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        .order-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .order-table th, .order-table td { padding: 16px; text-align: left; border-bottom: 1px solid #f1f2f6; }
-        .order-table th { background-color: #2575fc; color: white; font-weight: 600; text-transform: uppercase; font-size: 13px; letter-spacing: 0.5px; }
-        .status-badge { padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
-        .status-pending { background-color: #ffeaa7; color: #d63031; }
-        .refresh-btn { padding: 10px 22px; background-color: #2575fc; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 8px; }
-        .refresh-btn:hover { background-color: #1a5ecc; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
     </style>
 </head>
-<body>
+<body class="bg-slate-50 antialiased text-slate-800">
 
-    <header class="navbar">
-        <div class="nav-container">
-            <div class="logo">MyStore - Operations Management Center</div>
-            <div><strong>Access Scope: Root Owner Anand</strong></div>
-        </div>
-    </header>
-
-    <div class="dashboard-container">
-        <div class="dashboard-header">
-            <h2>Realtime Incoming Consumer Order Invoices</h2>
-            <button onclick="loadOrders()" class="refresh-btn">🔄 Refresh Dashboard Stream</button>
-        </div>
+    <div class="flex h-screen overflow-hidden">
         
-        <table class="order-table">
-            <thead>
-                <tr>
-                    <th>Order_ID</th>
-                    <th>Customer_Name</th>
-                    <th>Phone</th>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Address</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody id="ordersTableBody">
-                <tr><td colspan="7" style="text-align:center; padding:30px; color:#888;">Establishing API network handshake pipeline with Google Apps Script node...</td></tr>
-            </tbody>
-        </table>
+        <!-- 1. Left Navigation Sidebar -->
+        <aside class="w-64 bg-slate-900 text-slate-200 flex flex-col hidden md:flex shrink-0">
+            <div class="h-16 flex items-center justify-center bg-slate-950 font-bold text-lg tracking-tight border-b border-slate-800">
+                <i class="fa-solid fa-bolt text-indigo-400 mr-2"></i> OPERATIONAL <span class="text-indigo-400 ml-1">HUB</span>
+            </div>
+            
+            <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+                <a href="#" class="flex items-center px-4 py-3 bg-indigo-600 text-white rounded-xl font-medium transition">
+                    <i class="fa-solid fa-chart-pie w-6 text-xl"></i> Control Console
+                </a>
+                <a href="#" class="flex items-center px-4 py-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-xl font-medium transition">
+                    <i class="fa-solid fa-store w-6 text-xl"></i> Store Outlets
+                </a>
+                <a href="#" class="flex items-center px-4 py-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-xl font-medium transition">
+                    <i class="fa-solid fa-boxes-stacked w-6 text-xl"></i> Inventory Logs
+                </a>
+                <a href="#" class="flex items-center px-4 py-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-xl font-medium transition">
+                    <i class="fa-solid fa-motorcycle w-6 text-xl"></i> Fleet Tracking
+                </a>
+                <a href="#" class="flex items-center px-4 py-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-xl font-medium transition">
+                    <i class="fa-solid fa-sliders w-6 text-xl"></i> Configuration
+                </a>
+            </nav>
+
+            <div class="p-4 bg-slate-950 border-t border-slate-800">
+                <button class="w-full bg-rose-600 hover:bg-rose-700 text-white font-semibold py-2.5 px-4 rounded-xl flex items-center justify-center transition shadow-lg shadow-rose-900/20">
+                    <i class="fa-solid fa-power-off mr-2"></i> Terminate Session
+                </button>
+            </div>
+        </aside>
+
+        <!-- Right Side Main Viewport Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            
+            <!-- 2. Top Navigation Bar -->
+            <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 z-10">
+                <div class="flex items-center">
+                    <button class="text-slate-500 focus:outline-none md:hidden mr-4">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                    <h1 class="text-xl font-bold text-slate-900 tracking-tight">System Overview Matrix</h1>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button class="text-slate-400 hover:text-slate-600 relative p-1.5 rounded-lg hover:bg-slate-50 transition">
+                        <i class="fa-solid fa-bell text-xl"></i>
+                        <span class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-white"></span>
+                    </button>
+                    <div class="h-6 w-px bg-slate-200"></div>
+                    <div class="flex items-center space-x-2.5">
+                        <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold shadow-md shadow-indigo-600/20">
+                            A
+                        </div>
+                        <span class="text-sm font-semibold text-slate-700 hidden sm:inline">Anand (TL)</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- 3. Primary Dashboard Canvas Data Views -->
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-slate-50 p-6 space-y-6">
+                
+                <!-- Performance Statistics Metrics Cards Grid Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    
+                    <!-- Metrics Card 1 -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Consignments</p>
+                            <h3 class="text-2xl font-extrabold text-slate-900 mt-1">1,245</h3>
+                            <p class="text-xs text-emerald-600 font-semibold mt-2 flex items-center">
+                                <i class="fa-solid fa-arrow-trend-up mr-1"></i> +12% vs last cycle
+                            </p>
+                        </div>
+                        <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl shadow-inner">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                        </div>
+                    </div>
+
+                    <!-- Metrics Card 2 -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Active Fleet Riders</p>
+                            <h3 class="text-2xl font-extrabold text-slate-900 mt-1">42</h3>
+                            <p class="text-xs text-emerald-600 font-semibold mt-2 flex items-center">
+                                <span class="w-2 h-2 bg-emerald-500 rounded-full mr-1.5 animate-pulse"></span> 38 actively routing
+                            </p>
+                        </div>
+                        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl shadow-inner">
+                            <i class="fa-solid fa-motorcycle"></i>
+                        </div>
+                    </div>
+
+                    <!-- Metrics Card 3 -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Pending Exchanges (Prexo)</p>
+                            <h3 class="text-2xl font-extrabold text-slate-900 mt-1">18</h3>
+                            <p class="text-xs text-amber-600 font-semibold mt-2 flex items-center">
+                                <i class="fa-solid fa-circle-exclamation mr-1"></i> Immediate processing required
+                            </p>
+                        </div>
+                        <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl shadow-inner">
+                            <i class="fa-solid fa-arrows-rotate"></i>
+                        </div>
+                    </div>
+
+                    <!-- Metrics Card 4 -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Mean SLA Delivery Time</p>
+                            <h3 class="text-2xl font-extrabold text-slate-900 mt-1">11.4 min</h3>
+                            <p class="text-xs text-indigo-600 font-semibold mt-2 flex items-center">
+                                <i class="fa-solid fa-bolt-lightning mr-1"></i> Target SLA: &lt; 15 mins
+                            </p>
+                        </div>
+                        <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl shadow-inner">
+                            <i class="fa-solid fa-stopwatch"></i>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Recent Activity Inbound Log Live Streams Table Block Layout -->
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+                    <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                        <h2 class="text-base font-bold text-slate-900">Real-Time Inbound Pipelines</h2>
+                        <button class="text-sm text-indigo-600 hover:text-indigo-800 font-bold transition">View Comprehensive Ledger</button>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse whitespace-nowrap">
+                            <thead>
+                                <tr class="bg-slate-50/70 text-slate-500 text-xs font-bold uppercase tracking-wider border-b border-slate-100">
+                                    <th class="px-6 py-3.5">Transaction ID</th>
+                                    <th class="px-6 py-3.5">Hub Designation</th>
+                                    <th class="px-6 py-3.5">Consignment Classification</th>
+                                    <th class="px-6 py-3.5">Operational Status</th>
+                                    <th class="px-6 py-3.5">Timestamp Sync</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm text-slate-600 divide-y divide-slate-100 font-medium">
+                                <tr class="hover:bg-slate-50/50 transition">
+                                    <td class="px-6 py-4 font-bold text-slate-900">#ORD-9482</td>
+                                    <td class="px-6 py-4">Salt Lake - Hub Alpha</td>
+                                    <td class="px-6 py-4">High-Velocity Essentials Pack</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-2.5 py-1 text-xs font-bold bg-emerald-50 text-emerald-700 rounded-lg">
+                                            Dispatched / Delivered
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-slate-400">2 mins elapsed</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50/50 transition">
+                                    <td class="px-6 py-4 font-bold text-slate-900">#ORD-9481</td>
+                                    <td class="px-6 py-4">New Town - Hub Beta</td>
+                                    <td class="px-6 py-4">Smartphone Bundle (Prexo Validation)</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-2.5 py-1 text-xs font-bold bg-indigo-50 text-indigo-700 rounded-lg">
+                                            Fleet Agent Allocated
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-slate-400">5 mins elapsed</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50/50 transition">
+                                    <td class="px-6 py-4 font-bold text-slate-900">#ORD-9480</td>
+                                    <td class="px-6 py-4">Tollygunge - Hub Gamma</td>
+                                    <td class="px-6 py-4">Electronics & Infrastructure Hardware</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-2.5 py-1 text-xs font-bold bg-amber-50 text-amber-700 rounded-lg">
+                                            Processing In-Hub
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-slate-400">8 mins elapsed</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </main>
+        </div>
     </div>
 
-    <script>
-        // Secure Target Endpoint Root Node Mapping
-        const scriptUrl = "https://script.google.com/macros/s/AKfycbyMOWfLzr742-CeLnIWEI_-f2-vETiRWn8NKBDzRy3JnaRe4ZwDbOB24JFXilSLBL67/exec";
-
-        function loadOrders() {
-            const tableBody = document.getElementById('ordersTableBody');
-            
-            fetch(scriptUrl, { method: 'GET', cache: 'no-cache' })
-            .then(response => {
-                if (!response.ok) throw new Error('Data transmission integrity validation failed from core API');
-                return response.json();
-            })
-            .then(responseObj => {
-                tableBody.innerHTML = "";
-                
-                // Extracting data array from the Apps Script response object
-                const data = responseObj.data || [];
-                
-                if (!data || data.length === 0) {
-                    tableBody.innerHTML = <tr><td colspan="7" style="text-align:center; padding:30px; color:#aaa;">No consumer purchase metadata records found inside backend database storage.</td></tr>;
-                    return;
-                }
-
-                // Map database nodes and execute LIFO loop structure (Newest first)
-                for (let i = data.length - 1; i >= 0; i--) {
-                    const row = data[i];
-                    
-                    // Direct dynamic mapping fallback for Google Sheets headers
-                    const orderId = row["Order ID"] || row.Order_ID || "N/A";
-                    const name = row["Customer Name"] || row.Customer_Name || "N/A";
-                    const phone = row["Contact Phone"] || row.Phone || "N/A";
-                    const product = row["Product Title"] || row.Product || "N/A";
-                    
-                    // Formatting and extracting price data safely
-                    const rawPrice = row["Price Captured"] || row.Price;
-                    const price = rawPrice ? ${parseFloat(rawPrice).toFixed(2)} : "N/A";
-                    
-                    const address = row["Shipping Destination"] || row.Address || "N/A";
-                    const status = row["Logistics Status"] || row.Status || "Pending";
-
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td><strong>#${orderId}</strong></td>
-                        <td>${name}</td>
-                        <td>${phone}</td>
-                        <td><span style="color:#2575fc; font-weight:600;">${product}</span></td>
-                        <td><strong>${price}</strong></td>
-                        <td>${address}</td>
-                        <td><span class="status-badge status-pending">${status}</span></td>
-                    `;
-                    tableBody.appendChild(tr);
-                }
-            })
-            .catch(error => {
-                tableBody.innerHTML = <tr><td colspan="7" style="text-align:center; padding:30px; color:#d63031; font-weight:600;">Data ingestion runtime error. Check Google Apps Script compilation parameters.</td></tr>;
-                console.error(error);
-            });
-        }
-
-        // Auto-run routine initialization loop
-        window.onload = loadOrders;
-        setInterval(loadOrders, 12000); 
-    </script>
 </body>
 </html>
