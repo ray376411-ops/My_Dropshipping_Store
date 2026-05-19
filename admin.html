@@ -2,23 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Panel</title>
+    <title>Admin Dashboard - Operation 300</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-100 p-6">
-    <h1 class="text-2xl font-bold mb-6">Live Orders Panel</h1>
-    <table class="w-full bg-white text-black rounded-lg overflow-hidden shadow-lg border border-gray-200">
-        <thead class="bg-gray-200">
-            <tr>
-                <th class="p-3 text-left">Customer</th>
-                <th class="p-3 text-left">Product</th>
-                <th class="p-3 text-left">Price</th>
-                <th class="p-3 text-left">Status</th>
-                <th class="p-3 text-left">Actions</th>
-            </tr>
-        </thead>
-        <tbody id="admin-orders"></tbody>
-    </table>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-6xl mx-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">Live Orders Panel</h1>
+            <div class="bg-blue-600 text-white px-6 py-2 rounded-lg font-bold shadow-md">
+                Operation 300
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-gray-50 border-b">
+                        <th class="p-4 text-gray-600 font-semibold">Customer</th>
+                        <th class="p-4 text-gray-600 font-semibold">Product</th>
+                        <th class="p-4 text-gray-600 font-semibold">Price</th>
+                        <th class="p-4 text-gray-600 font-semibold">Status</th>
+                        <th class="p-4 text-gray-600 font-semibold">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-orders">
+                    </tbody>
+            </table>
+        </div>
+    </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -46,19 +57,19 @@
                 const status = o.status || "Pending";
                 
                 table.innerHTML += `
-                    <tr class="border-b">
-                        <td class="p-3">${o.name}<br><small class="text-gray-500">${o.phone}</small></td>
-                        <td class="p-3 font-medium">${o.product}</td>
-                        <td class="p-3 text-indigo-600 font-bold">${o.price}</td>
-                        <td class="p-3">
-                            <select onchange="updateStatus('${id}', this.value)" class="border p-1 rounded">
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="p-4">${o.name}<br><span class="text-xs text-gray-400">${o.phone}</span></td>
+                        <td class="p-4 font-medium">${o.product}</td>
+                        <td class="p-4 text-blue-600 font-bold">${o.price}</td>
+                        <td class="p-4">
+                            <select onchange="updateStatus('${id}', this.value)" class="border border-gray-300 rounded p-1 text-sm">
                                 <option ${status === 'Pending' ? 'selected' : ''}>Pending</option>
                                 <option ${status === 'Delivered' ? 'selected' : ''}>Delivered</option>
                                 <option ${status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
                             </select>
                         </td>
-                        <td class="p-3">
-                            <button onclick="deleteOrder('${id}')" class="bg-red-600 text-white px-3 py-1 rounded">Delete</button>
+                        <td class="p-4">
+                            <button onclick="deleteOrder('${id}')" class="text-red-500 font-bold hover:underline">Delete</button>
                         </td>
                     </tr>`;
             }
