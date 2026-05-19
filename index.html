@@ -2,39 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Trendspot Store</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trendspot Premium Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50">
 
-    <nav class="p-6 bg-white shadow-md flex justify-between items-center">
-        <h1 class="text-2xl font-bold tracking-tight">TRENDSPOT</h1>
-        <button class="text-xl">🛒 Cart</button>
+    <nav class="bg-white p-4 shadow-lg sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-black text-indigo-700">TRENDSPOT</h1>
+            <div class="flex gap-4">
+                <button onclick="filterProducts('All')" class="font-bold">All</button>
+                <button onclick="filterProducts('Gadgets')" class="font-bold">Gadgets</button>
+                <button onclick="filterProducts('Fashion')" class="font-bold">Fashion</button>
+            </div>
+            <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold">Cart (0)</button>
+        </div>
     </nav>
 
     <main class="max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-3 gap-8" id="product-grid">
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-            <img src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=600" class="w-full h-48 object-cover rounded-xl mb-4">
-            <h3 class="text-lg font-bold">Wireless Earbuds</h3>
-            <p class="text-indigo-600 font-bold mb-4">₹1,299</p>
-            <div class="flex gap-2">
-                <button onclick="addToCart('Wireless Earbuds', '₹1,299')" class="w-1/2 border border-black py-2 rounded-lg font-bold">Add to Cart</button>
-                <button onclick="showCheckout('Wireless Earbuds', '₹1,299')" class="w-1/2 bg-black text-white py-2 rounded-lg font-bold">Buy Now</button>
-            </div>
-        </div>
-    </main>
-
-    <div id="checkoutModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-        <div class="bg-white p-8 rounded-2xl w-full max-w-md">
-            <h2 class="text-xl font-bold mb-4">COD Checkout</h2>
-            <input type="text" id="cName" placeholder="Full Name" class="w-full border p-2 mb-2 rounded">
-            <input type="text" id="cPhone" placeholder="Phone Number" class="w-full border p-2 mb-2 rounded">
-            <input type="text" id="cAddress" placeholder="Full Address" class="w-full border p-2 mb-2 rounded">
-            <input type="text" id="cPin" placeholder="Pin Code" class="w-full border p-2 mb-4 rounded">
-            <button onclick="placeCOD()" class="w-full bg-green-600 text-white py-2 rounded-lg">Confirm COD Order</button>
-            <button onclick="document.getElementById('checkoutModal').classList.add('hidden')" class="w-full mt-2 text-gray-500">Cancel</button>
-        </div>
-    </div>
+        </main>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -52,34 +39,41 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        let currentProduct = "";
-        let currentPrice = "";
+        const products = [
+            { title: "Wireless Earbuds", price: "₹1,299", category: "Gadgets", img: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=600" },
+            { title: "Smart Watch", price: "₹2,499", category: "Gadgets", img: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=600" },
+            { title: "Leather Jacket", price: "₹3,999", category: "Fashion", img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600" },
+            { title: "Classic Shades", price: "₹899", category: "Fashion", img: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600" },
+            { title: "Gaming Mouse", price: "₹1,500", category: "Gadgets", img: "https://images.unsplash.com/photo-1527864550417-7fd91051a365?w=600" },
+            { title: "Denim Jeans", price: "₹1,800", category: "Fashion", img: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=600" }
+        ];
+
+        function display(list) {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = "";
+            list.forEach(p => {
+                grid.innerHTML += `
+                    <div class="bg-white p-6 rounded-3xl shadow-xl hover:scale-105 transition duration-300">
+                        <img src="${p.img}" class="w-full h-56 object-cover rounded-2xl mb-4">
+                        <h3 class="text-xl font-bold">${p.title}</h3>
+                        <p class="text-indigo-600 font-bold mb-4">${p.price}</p>
+                        <button onclick="addToCart('${p.title}', '${p.price}')" 
+                                class="w-full bg-black text-white py-3 rounded-xl font-bold hover:bg-indigo-700">Add to Cart</button>
+                    </div>`;
+            });
+        }
+
+        function filterProducts(cat) {
+            if(cat === 'All') display(products);
+            else display(products.filter(p => p.category === cat));
+        }
 
         function addToCart(title, price) {
             db.ref('cart/').push({ item: title, price: price });
-            alert(title + " added to Cart!");
+            alert(title + " has been added to your cart successfully!");
         }
 
-        function showCheckout(title, price) {
-            currentProduct = title;
-            currentPrice = price;
-            document.getElementById('checkoutModal').classList.remove('hidden');
-        }
-
-        function placeCOD() {
-            const order = {
-                name: document.getElementById('cName').value,
-                phone: document.getElementById('cPhone').value,
-                address: document.getElementById('cAddress').value,
-                pin: document.getElementById('cPin').value,
-                product: currentProduct,
-                price: currentPrice,
-                status: "Pending COD"
-            };
-            db.ref('orders/').push(order);
-            alert("Order placed successfully!");
-            document.getElementById('checkoutModal').classList.add('hidden');
-        }
+        display(products);
     </script>
 </body>
 </html>
