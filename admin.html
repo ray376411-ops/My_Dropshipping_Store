@@ -5,23 +5,25 @@
     <title>Admin Dashboard - Trendspot</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-900 text-white p-8">
-    <h1 class="text-3xl font-bold mb-8 border-b border-gray-700 pb-4">Live Orders Dashboard</h1>
-    
-    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-        <table class="w-full text-black">
-            <thead class="bg-gray-100">
-                <tr class="text-left">
-                    <th class="p-4">Customer</th>
-                    <th class="p-4">Product</th>
-                    <th class="p-4">Price</th>
-                    <th class="p-4">Status</th>
-                    <th class="p-4">Actions</th>
-                </tr>
-            </thead>
-            <tbody id="admin-orders">
-                </tbody>
-        </table>
+<body class="bg-gray-50 p-8">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold mb-6">Live Orders Panel</h1>
+        
+        <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
+            <table class="w-full text-left border-collapse">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="p-4 border-b">Customer Details</th>
+                        <th class="p-4 border-b">Product</th>
+                        <th class="p-4 border-b">Price</th>
+                        <th class="p-4 border-b">Status</th>
+                        <th class="p-4 border-b">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-orders">
+                    </tbody>
+            </table>
+        </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -52,17 +54,17 @@
                 table.innerHTML += `
                     <tr class="border-b">
                         <td class="p-4">${o.name}<br><small class="text-gray-500">${o.phone}</small></td>
-                        <td class="p-4 font-bold">${o.product}</td>
-                        <td class="p-4">${o.price}</td>
+                        <td class="p-4 font-semibold">${o.product}</td>
+                        <td class="p-4 text-indigo-600 font-bold">${o.price}</td>
                         <td class="p-4">
-                            <select onchange="updateStatus('${id}', this.value)" class="border p-1 rounded">
+                            <select onchange="updateStatus('${id}', this.value)" class="border border-gray-300 p-1 rounded bg-gray-50">
                                 <option ${status === 'Pending' ? 'selected' : ''}>Pending</option>
                                 <option ${status === 'Delivered' ? 'selected' : ''}>Delivered</option>
                                 <option ${status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
                             </select>
                         </td>
                         <td class="p-4">
-                            <button onclick="deleteOrder('${id}')" class="bg-red-600 text-white px-3 py-1 rounded">Delete</button>
+                            <button onclick="deleteOrder('${id}')" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
                         </td>
                     </tr>`;
             }
