@@ -1,5 +1,13 @@
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Control Terminal | Admin Panel</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+</head>
+<body>
+    <tbody id="pipeline-rows"></tbody>
 
     <script>
         const firebaseConfig = {
@@ -12,29 +20,30 @@
             appId: "1:195199081717:web:3b14a6a93f0cf64d6ab9bc",
             measurementId: "G-RE8DDQ5SWN"
         };
-        firebase.initializeApp(firebaseConfig);
+
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
         database.ref('live_orders/').on('value', (snapshot) => {
             const rowsContainer = document.getElementById('pipeline-rows');
+            if(!rowsContainer) return;
             rowsContainer.innerHTML = "";
-            const data = snapshot.val();
             
+            const data = snapshot.val();
             if(!data) {
-                rowsContainer.innerHTML = `<tr><td colspan="6" class="px-6 py-8 text-center text-slate-400 font-medium">Pipeline empty.</td></tr>`;
+                rowsContainer.innerHTML = <tr><td colspan="6">Pipeline empty.</td></tr>;
                 return;
             }
 
-            const activeOrdersList = Object.values(data).reverse();
-            activeOrdersList.forEach(order => {
+            Object.values(data).reverse().forEach(order => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td class="px-6 py-4">${order.orderId}</td>
-                    <td class="px-6 py-4">${order.time}</td>
-                    <td class="px-6 py-4">${order.customerName}</td>
-                    <td class="px-6 py-4">${order.itemsPurchased}</td>
-                    <td class="px-6 py-4">${order.totalAmount}</td>
-                    <td class="px-6 py-4">${order.status}</td>
+                    <td>${order.orderId || '---'}</td>
+                    <td>${order.time || '---'}</td>
+                    <td>${order.customerName || '---'}</td>
+                    <td>${order.itemsPurchased || '---'}</td>
+                    <td>${order.totalAmount || '---'}</td>
+                    <td>${order.status || 'Pending'}</td>
                 `;
                 rowsContainer.appendChild(tr);
             });
