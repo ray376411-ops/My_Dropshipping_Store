@@ -1,0 +1,14 @@
+{
+  "products": {
+    "item1": {
+      "title": "Wireless Earbuds",
+      "price": "₹1,299",
+      "image": "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=600"
+    },
+    "item2": {
+      "title": "Smart Fitness Watch",
+      "price": "₹2,499",
+      "image": "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=600"
+    }
+  }
+}

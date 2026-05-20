@@ -1,116 +1,193 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TREND SPOT | Premium Store</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRENDSPOT | Premium Marketplace</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .glass { background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(18px); }
-        .hero-gradient { background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.35), transparent 30%), radial-gradient(circle at bottom right, rgba(99, 102, 241, 0.25), transparent 30%), #0f172a; }
-        .smooth { transition: all 0.4s ease; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
     </style>
 </head>
-<body class="bg-[#f6f7fb] text-gray-900">
+<body class="bg-slate-50 text-slate-900 antialiased">
 
-    <!-- Navbar/Hero/Products सेक्शन यहाँ वैसे ही रहेंगे (कोड बड़ा न हो इसलिए संक्षिप्त किया गया है) -->
+    <header class="h-20 bg-white border-b border-slate-200 sticky top-0 z-50 px-6 lg:px-12 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-600/30">
+                <i class="fa-solid fa-bolt text-white text-lg"></i>
+            </div>
+            <span class="font-extrabold text-2xl tracking-tight bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">TRENDSPOT</span>
+        </div>
 
-    <!-- PRODUCT MODAL -->
-    <div id="detailModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 overflow-y-auto">
-        <div class="bg-white w-full max-w-2xl rounded-[35px] overflow-hidden shadow-2xl">
-            <div class="grid md:grid-cols-2">
-                <div class="bg-gray-100 p-6"><img id="modalImg" class="w-full h-full object-cover rounded-[25px]"></div>
-                <div class="p-8 overflow-y-auto max-h-[80vh]">
-                    <h2 id="modalTitle" class="text-4xl font-black mb-2"></h2>
-                    <p id="modalPrice" class="text-2xl font-black text-blue-600 mb-4"></p>
-                    
-                    <!-- Updated Customer Form -->
-                    <div class="space-y-3 mb-6">
-                        <input type="text" id="customerName" placeholder="Full Name" class="w-full border p-3 rounded-xl">
-                        <input type="tel" id="customerPhone" placeholder="Phone Number" class="w-full border p-3 rounded-xl">
-                        <input type="text" id="houseNumber" placeholder="House/Flat No." class="w-full border p-3 rounded-xl">
-                        <input type="text" id="roadName" placeholder="Road/Area Name" class="w-full border p-3 rounded-xl">
-                        <input type="number" id="pinCode" placeholder="Pin Code" class="w-full border p-3 rounded-xl">
-                        <input type="text" id="city" placeholder="City" class="w-full border p-3 rounded-xl">
-                    </div>
-                    <button onclick="placeOrder()" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-bold">Place Order</button>
-                    <button onclick="closeModal()" class="w-full mt-2 bg-gray-100 py-4 rounded-2xl">Close</button>
+        <div class="flex items-center space-x-6 relative">
+            <button class="relative p-2 text-slate-600 hover:text-indigo-600 transition">
+                <i class="fa-solid fa-cart-shopping text-xl"></i>
+                <span id="cart-badge" class="absolute -top-1 -right-1 w-5 h-5 bg-indigo-600 text-white rounded-full text-[10px] font-bold flex items-center justify-center">0</span>
+            </button>
+
+            <div class="relative">
+                <button onclick="toggleActionMenu()" class="p-2 text-slate-600 hover:bg-slate-100 rounded-xl transition focus:outline-none">
+                    <i class="fa-solid fa-ellipsis-vertical text-xl"></i>
+                </button>
+                <div id="action-dropdown" class="hidden absolute right-0 mt-3 w-52 bg-white border border-slate-200 rounded-2xl shadow-xl z-50 overflow-hidden">
+                    <div class="px-4 py-2.5 bg-slate-50 border-b border-slate-100 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Navigation System</div>
+                    <a href="index.html" class="flex items-center px-4 py-3 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition font-medium">
+                        <i class="fa-solid fa-house w-6 opacity-60"></i> Home Page
+                    </a>
+                    <a href="admin.html" class="flex items-center px-4 py-3 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition font-medium border-t border-slate-100">
+                        <i class="fa-solid fa-user-shield w-6 opacity-60"></i> Staff Portal
+                    </a>
                 </div>
             </div>
         </div>
-    </div>
+    </header>
 
-    <!-- CART SIDEBAR -->
-    <div id="cartSidebar" class="fixed top-0 right-[-100%] w-full md:w-[420px] h-full bg-white z-50 shadow-2xl smooth p-6 overflow-y-auto">
-        <h2 class="text-3xl font-black mb-6">Your Cart</h2>
-        <div id="cart-items" class="space-y-4"></div>
-        
-        <!-- Updated Cart Form -->
-        <div class="space-y-3 mt-8">
-            <input type="text" id="cartCustomerName" placeholder="Full Name" class="w-full border p-3 rounded-xl">
-            <input type="tel" id="cartCustomerPhone" placeholder="Phone Number" class="w-full border p-3 rounded-xl">
-            <input type="text" id="cartHouseNumber" placeholder="House/Flat No." class="w-full border p-3 rounded-xl">
-            <input type="text" id="cartRoadName" placeholder="Road/Area Name" class="w-full border p-3 rounded-xl">
-            <input type="number" id="cartPinCode" placeholder="Pin Code" class="w-full border p-3 rounded-xl">
-            <input type="text" id="cartCity" placeholder="City" class="w-full border p-3 rounded-xl">
-        </div>
-        
-        <button onclick="checkoutOrder()" class="w-full mt-6 bg-blue-600 text-white py-4 rounded-2xl font-bold">Place Order</button>
-    </div>
+    <main class="max-w-7xl mx-auto px-6 lg:px-8 py-12 space-y-12">
+        <section class="text-center max-w-3xl mx-auto space-y-4 pt-4">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-100">
+                <span class="w-1.5 h-1.5 bg-indigo-500 rounded-full mr-2 animate-pulse"></span> Verified Wholesale Inventory
+            </span>
+            <h1 class="text-4xl sm:text-5xl font-black text-slate-950 tracking-tight">Trending Global Products</h1>
+            <p class="text-sm sm:text-base text-slate-500 font-medium">Direct supply networks bringing high-demand, viral products straight to your catalog database with native automation sync channels.</p>
+        </section>
+
+        <section class="space-y-8">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-slate-200 pb-5 space-y-4 sm:space-y-0">
+                <h2 class="text-lg font-extrabold text-slate-950">Select Category Matrix</h2>
+                <div class="flex flex-wrap gap-2" id="filter-buttons-container">
+                    <button onclick="filterCatalog('all')" id="btn-all" class="category-btn px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm transition">All Products</button>
+                    <button onclick="filterCatalog('Smart Gadgets')" id="btn-smart" class="category-btn px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-600 hover:bg-slate-100 transition border border-slate-200">Smart Gadgets</button>
+                    <button onclick="filterCatalog('Fashion')" id="btn-fashion" class="category-btn px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-600 hover:bg-slate-100 transition border border-slate-200">Fashion</button>
+                    <button onclick="filterCatalog('Home Decor')" id="btn-decor" class="category-btn px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-600 hover:bg-slate-100 transition border border-slate-200">Home Decor</button>
+                    <button onclick="filterCatalog('Electronics')" id="btn-elec" class="category-btn px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-600 hover:bg-slate-100 transition border border-slate-200">Electronics</button>
+                </div>
+            </div>
+
+            <div id="storefront-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                </div>
+        </section>
+    </main>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
     <script>
-        const firebaseConfig = { /* आपका कॉन्फ़िगरेशन वही रहेगा */ };
+        // Paste your exact Firebase config parameters inside this block
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
         firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
 
-        function placeOrder() {
-            const data = {
-                name: document.getElementById('customerName').value,
-                phone: document.getElementById('customerPhone').value,
-                house: document.getElementById('houseNumber').value,
-                road: document.getElementById('roadName').value,
-                pin: document.getElementById('pinCode').value,
-                city: document.getElementById('city').value
-            };
-            if (!data.name || !data.phone || !data.pin) return alert("Please fill required fields!");
+        // Comprehensive Master Database Array containing all 8 target items
+        const masterProductsDatabase = [
+            { id: "TS-101", title: "Wireless Earbuds Pro", category: "Smart Gadgets", price: "₹1,299", image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=600", description: "Active noise cancellation with 24 hours battery." },
+            { id: "TS-102", title: "Smart Fitness Watch X", category: "Smart Gadgets", price: "₹2,499", image: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=600", description: "AMOLED display tracking heart rate and sleep." },
+            { id: "TS-201", title: "Classic Polarized Sunglasses", category: "Fashion", price: "₹899", image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600", description: "High-definition UV400 protection eyewear." },
+            { id: "TS-202", title: "Minimalist Leather Wallet", category: "Fashion", price: "₹699", image: "https://images.unsplash.com/photo-1627123424574-724758594e93?w=600", description: "Slim RFID blocking genuine leather card holder." },
+            { id: "TS-301", title: "Ceramic Plant Pot Geometric", category: "Home Decor", price: "₹549", image: "https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=600", description: "Nordic style matte white indoor plant container." },
+            { id: "TS-302", title: "Aromatic Oil Diffuser", category: "Home Decor", price: "₹1,199", image: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=600", description: "Ultrasonic cool mist humidifier with 7 LED lamps." },
+            { id: "TS-401", title: "Ergonomic Gaming Mouse", category: "Electronics", price: "₹1,499", image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=600", description: "High precision RGB backlit optical wired mouse." },
+            { id: "TS-402", title: "Mechanical Keyboard Lite", category: "Electronics", price: "₹2,199", image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600", description: "Tactile blue switches with customizable backlight." }
+        ];
 
-            const orderRef = firebase.database().ref("orders").push();
-            orderRef.set({
-                orderId: orderRef.key,
-                customerDetails: data,
-                product: window.activeProduct.title,
-                price: window.activeProduct.price,
-                createdAt: new Date().toLocaleString()
-            });
-            alert("Order Success! ID: " + orderRef.key);
-            closeModal();
+        let currentCartCount = 0;
+
+        function toggleActionMenu() {
+            document.getElementById('action-dropdown').classList.toggle('hidden');
         }
 
-        function checkoutOrder() {
-            const data = {
-                name: document.getElementById('cartCustomerName').value,
-                phone: document.getElementById('cartCustomerPhone').value,
-                house: document.getElementById('cartHouseNumber').value,
-                road: document.getElementById('cartRoadName').value,
-                pin: document.getElementById('cartPinCode').value,
-                city: document.getElementById('cartCity').value
-            };
-            if (!data.name || !data.phone || !data.pin) return alert("Please fill required fields!");
-
-            const orderRef = firebase.database().ref("orders").push();
-            orderRef.set({
-                orderId: orderRef.key,
-                customerDetails: data,
-                items: cart,
-                total: document.getElementById('cart-total').innerText,
-                createdAt: new Date().toLocaleString()
+        function renderStoreGrid(targetProducts) {
+            const grid = document.getElementById('storefront-grid');
+            grid.innerHTML = "";
+            
+            targetProducts.forEach(prod => {
+                const card = document.createElement('div');
+                card.className = "bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-xs hover:shadow-xl hover:-translate-y-1 transition duration-300 transform flex flex-col justify-between";
+                card.innerHTML = `
+                    <div>
+                        <div class="relative overflow-hidden group">
+                            <img src="${prod.image}" class="h-52 w-full object-cover bg-slate-50 transition duration-500 group-hover:scale-105" alt="${prod.title}">
+                            <span class="absolute top-3 left-3 px-2 py-0.5 text-[9px] font-bold bg-slate-900/80 text-white rounded-md uppercase tracking-wider backdrop-blur-xs">${prod.category}</span>
+                        </div>
+                        <div class="p-5 space-y-1.5">
+                            <h3 class="font-bold text-slate-900 text-sm leading-tight line-clamp-1">${prod.title}</h3>
+                            <p class="text-xs text-slate-500 leading-normal line-clamp-2">${prod.description}</p>
+                        </div>
+                    </div>
+                    <div class="px-5 pb-5 pt-2 flex items-center justify-between border-t border-slate-50 mt-auto">
+                        <span class="text-indigo-600 font-extrabold text-base tracking-tight">${prod.price}</span>
+                        <button onclick="dispatchLiveOrder('${prod.id}', '${prod.title}', '${prod.price}')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition shadow-xs">
+                            Buy Now
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
             });
-            alert("Order Success! ID: " + orderRef.key);
-            cart = []; updateCart(); toggleCart();
         }
+
+        function filterCatalog(category) {
+            // Manage Tab Styles
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.className = "category-btn px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-600 hover:bg-slate-100 transition border border-slate-200";
+            });
+            
+            if(category === 'all') {
+                document.getElementById('btn-all').className = "category-btn px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm transition";
+                renderStoreGrid(masterProductsDatabase);
+            } else {
+                if(category === 'Smart Gadgets') document.getElementById('btn-smart').className = "category-btn px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm transition";
+                if(category === 'Fashion') document.getElementById('btn-fashion').className = "category-btn px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm transition";
+                if(category === 'Home Decor') document.getElementById('btn-decor').className = "category-btn px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm transition";
+                if(category === 'Electronics') document.getElementById('btn-elec').className = "category-btn px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm transition";
+                
+                const filtered = masterProductsDatabase.filter(p => p.category === category);
+                renderStoreGrid(filtered);
+            }
+        }
+
+        // Global Action Engine: Pushes immediate order records directly to Firebase Instance
+        function dispatchLiveOrder(prodId, prodTitle, prodPrice) {
+            const timestamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+            const generatedOrderId = "#ORD-" + Math.floor(100000 + Math.random() * 900000);
+            
+            const databasePayload = {
+                orderId: generatedOrderId,
+                time: timestamp,
+                customerName: "Global Web Customer",
+                itemsPurchased: prodTitle,
+                totalAmount: prodPrice,
+                status: "Pending"
+            };
+
+            database.ref('live_orders/').push(databasePayload)
+            .then(() => {
+                currentCartCount++;
+                document.getElementById('cart-badge').innerText = currentCartCount;
+                alert(Success! Order for ${prodTitle} successfully submitted. Verification logged under token: ${generatedOrderId});
+            })
+            .catch(err => {
+                console.error("Transmission blocked:", err);
+                alert("Database transmission fault. Verify Firebase authorization payload.");
+            });
+        }
+
+        window.onload = () => { renderStoreGrid(masterProductsDatabase); };
+        window.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('action-dropdown');
+            if (!dropdown.contains(e.target) && !e.target.closest('button[onclick="toggleActionMenu()"]')) {
+                dropdown.classList.add('hidden');
+            }
+        });
     </script>
 </body>
 </html>
