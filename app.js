@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAGMiL4zA9yM48RgxKaa30Ge8wPG_FDomk",
@@ -12,40 +12,50 @@ const firebaseConfig = {
     measurementId: "G-RE8DDQ5SWN"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+const db = getDatabase(initializeApp(firebaseConfig));
 
-// Simple product list
+// 20 Products Database
 const products = [
-    { name: "Product 1", price: 499 }, { name: "Product 2", price: 599 },
-    { name: "Product 3", price: 399 }, { name: "Product 4", price: 899 },
-    // Add your 20 products here...
+    { name: "Smartphone", cat: "Electronics", price: 15000, img: "https://via.placeholder.com/200" },
+    { name: "Headphones", cat: "Electronics", price: 2000, img: "https://via.placeholder.com/200" },
+    { name: "Cotton Shirt", cat: "Apparel", price: 800, img: "https://via.placeholder.com/200" },
+    // Add remaining 17 products here following the same structure
 ];
 
 const grid = document.getElementById('product-grid');
-products.forEach(p => {
-    grid.innerHTML += `<div class="card">
-        <h3>${p.name}</h3>
-        <p>Price: ₹${p.price}</p>
-        <button>Add to Cart</button>
-    </div>`;
-});
 
-window.placeOrder = () => {
-    const orderData = {
-        name: document.getElementById('custName').value,
-        address: document.getElementById('custAddress').value,
-        phone: document.getElementById('custPhone').value,
-        pincode: document.getElementById('custPincode').value,
-        timestamp: new Date().toISOString()
-    };
+function displayProducts(filter = 'all') {
+    grid.innerHTML = '';
+    const filtered = filter === 'all' ? products : products.filter(p => p.cat === filter);
+    filtered.forEach(p => {
+        grid.innerHTML += `<div class="card">
+            <img src="${p.img}" class="product-img">
+            <h3>${p.name}</h3>
+            <p>₹${p.price}</p>
+            <button onclick="openModal('${p.name}')">Buy Now</button>
+        </div>`;
+    });
+}
 
-    if(!orderData.name || !orderData.phone) {
-        alert("Please fill in all details!");
-        return;
-    }
-
-    push(ref(db, 'orders/'), orderData)
-        .then(() => alert("Order placed successfully!"))
-        .catch(err => alert("Error: " + err.message));
+window.filterProducts = displayProducts;
+window.openModal = (name) => {
+    document.getElementById('orderModal').style.display = 'block';
+    window.selectedProduct = name;
 };
+window.closeModal = () => document.getElementById('orderModal').style.display = 'none';
+
+window.submitOrder = () => {
+    const orderData = {
+        product: window.selectedProduct,
+        name: document.getElementById('custName').value,
+        phone: document.getElementById('custPhone').value,
+        address: document.getElementById('custAddress').value,
+        pincode: document.getElementById('custPincode').value
+    };
+    push(ref(db, 'orders/'), orderData).then(() => {
+        alert("Order Successful!");
+        window.closeModal();
+    });
+};
+
+displayProducts();
