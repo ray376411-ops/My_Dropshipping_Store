@@ -8,23 +8,35 @@
 </head>
 <body>
 
-    <nav>
-        <h1>Trendspot Store</h1>
-    </nav>
+<header>
+    <h1>Trendspot Premium Store</h1>
+</header>
 
-    <div class="container">
-        <div id="product-grid" class="grid"></div>
+<!-- Categories Section -->
+<div class="category-nav">
+    <button onclick="filterProducts('all')">All</button>
+    <button onclick="filterProducts('Electronics')">Electronics</button>
+    <button onclick="filterProducts('Apparel')">Apparel</button>
+    <button onclick="filterProducts('Home')">Home</button>
+    <button onclick="filterProducts('Beauty')">Beauty</button>
+    <button onclick="filterProducts('Sports')">Sports</button>
+</div>
 
-        <section id="checkout">
-            <h2>Checkout Details</h2>
-            <input type="text" id="custName" placeholder="Full Name" required>
-            <input type="text" id="custAddress" placeholder="Address" required>
-            <input type="text" id="custPhone" placeholder="Phone Number" required>
-            <input type="text" id="custPincode" placeholder="Pincode" required>
-            <button id="submitOrder" onclick="placeOrder()">Place Order</button>
-        </section>
+<div id="product-grid" class="grid"></div>
+
+<!-- Order Modal -->
+<div id="orderModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Place Order</h2>
+        <input type="text" id="custName" placeholder="Full Name">
+        <input type="text" id="custPhone" placeholder="Phone Number">
+        <input type="text" id="custAddress" placeholder="Address">
+        <input type="text" id="custPincode" placeholder="Pincode">
+        <button id="confirmOrderBtn" onclick="submitOrder()">Confirm Order</button>
     </div>
+</div>
 
-    <script type="module" src="app.js"></script>
+<script type="module" src="app.js"></script>
 </body>
 </html>
